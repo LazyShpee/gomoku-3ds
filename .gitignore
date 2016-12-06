@@ -1,3 +1,9 @@
+*~
+*.3dsx
+*.elf
+*.smdh
+build/
+
 # Object files
 *.o
 *.ko
