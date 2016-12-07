@@ -122,7 +122,7 @@ ifeq ($(strip $(NO_SMDH)),)
 	export _3DSXFLAGS += --smdh=$(CURDIR)/$(TARGET).smdh
 endif
 
-.PHONY: $(BUILD) clean all
+.PHONY: $(BUILD) clean all re retest
 
 #---------------------------------------------------------------------------------
 ifeq ($(strip $(IMAGEMAGICK)),)
@@ -135,7 +135,6 @@ all:
 else
 
 all: $(BUILD)
-
 
 test:	all
 		@citra $(TARGET).3dsx
@@ -152,6 +151,9 @@ clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf
 
+re: clean all
+
+retest: clean test
 
 #---------------------------------------------------------------------------------
 else
@@ -184,12 +186,14 @@ $(OUTPUT).elf	:	$(OFILES)
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
+	@
 
 #---------------------------------------------------------------------------------
 %.bgr: %.png
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@convert $< -rotate 90 $@
+	ls -l
 
 -include $(DEPENDS)
 

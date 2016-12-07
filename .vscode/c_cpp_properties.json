@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": ["/usr/include"],
+            "browse" : {
+                "limitSymbolsToIncludedHeaders" : true,
+                "databaseFilename" : ""
+            }
+        },
+        {
+            "name": "Linux",
+            "includePath": ["/usr/include", "/opt/devkitpro/libnds/include", "/opt/devkitpro/devkitARM/arm-none-eabi/include", "/opt/devkitpro/devkitARM/lib/gcc/arm-none-eabi/5.3.0/install-tools/include", "/opt/devkitpro/devkitARM/lib/gcc/arm-none-eabi/5.3.0/plugin/include", "/opt/devkitpro/devkitARM/lib/gcc/arm-none-eabi/5.3.0/include", "/opt/devkitpro/devkitARM/include", "/opt/devkitpro/libctru/include"],
+            "browse" : {
+                "limitSymbolsToIncludedHeaders" : true,
+                "databaseFilename" : ""
+            }
+        },
+        {
+            "name": "Win32",
+            "includePath": ["c:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include"],
+            "browse" : {
+                "limitSymbolsToIncludedHeaders" : true,
+                "databaseFilename" : ""
+            }
+        }
+    ]
+}
