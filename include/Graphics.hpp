@@ -17,6 +17,13 @@
 # define BOTTOM_WIDTH       320 // Bottom screen width
 # define BOTTOM_SIZE           (BOTTOM_HEIGHT * BOTTOM_WIDTH)
 
+# define C_WHITE    0xFFFFFF
+# define C_RED      0xFF0000
+# define C_GREEN    0x00FF00
+# define C_BLUE     0x0000FF
+# define C_BLACK    0x000000
+# define C_ALPHA    0xFF1CCC
+
 # define RGB_TO_I(r, g, b) (r << 16 | g << 8 | b)
 # define I_TO_R(i) ((i & 0xFF << 16) >> 16)
 # define I_TO_G(i) ((i & 0xFF << 8) >> 8)
