@@ -1,8 +1,9 @@
 #ifndef GRAPHICS_H_
 # define GRAPHICS_H_
 
-# include <stddef.h>
+# include <string.h>
 # include <3ds.h>
+# include "Assets.hpp"
 
 # define TOP_HEIGHT         240 // Top screen height
 # define TOP_WIDTH          400 // Top screen width
@@ -23,8 +24,8 @@ class Image {
         }
 
         int GetPixel(size_t x, size_t y) {
-            if (!this->fb || x > WIDTH || y > HEIGHT) return (-1);
-            size_t offset = 3 * ((HEIGHT - y) + x * HEIGHT);
+            if (!this->fb || x >= WIDTH || y >= HEIGHT) return (-1);
+            size_t offset = 3 * ((HEIGHT - y - 1) + x * HEIGHT);
             int col = this->fb[offset] << 0 |
                     this->fb[offset + 1] << 8 |
                     this->fb[offset + 2] << 16;
@@ -54,7 +55,7 @@ class Screen : public Image<WIDTH, HEIGHT> {
 
         void SetPixel(size_t x, size_t y, char r, char g, char b) {
             if (!this->fb || x >= WIDTH || y >= HEIGHT) return;
-            size_t offset = 3 * ((HEIGHT - y) + x * HEIGHT);
+            size_t offset = 3 * ((HEIGHT - y - 1) + x * HEIGHT);
             this->fb[offset] = b;
             this->fb[offset + 1] = g;
             this->fb[offset + 2] = r;
