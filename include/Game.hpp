@@ -30,10 +30,15 @@ class Game : public IFrame {
 
         /* Game data */
         char board[19][19];
+        char player;
+        char lastX;
+        char lastY;
+
+        void UpdateBoard(char mx, char my); // Update the board base on last move played
     public:
         Game();
-        ~Game();
-        GameState Update(int dtms);
+        virtual ~Game();
+        GameState Update(int dtms, void *dataPtr);
         void Draw();
 };
 
