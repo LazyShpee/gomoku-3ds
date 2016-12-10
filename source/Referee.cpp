@@ -9,43 +9,8 @@ Referee::~Referee() {
 }
 
 char Referee::vision(char *v, char x, char y, char direction, bool lookBack) {
-  char a;
+  char vec[1][1];
 
-  switch (direction) {
-
-  case 0:
-    ;
-    break;
-
-  case 1:
-    ;
-    break;
-
-  case 2:
-    ;
-    break;
-
-  case 3:
-    ;
-    break;
-
-  case 4:
-    ;
-    break;
-
-  case 5:
-    ;
-    break;
-
-  case 6:
-    ;
-    break;
-
-  case 7:
-    ;
-    break;
-
-  }
 
   return 0;
 }
