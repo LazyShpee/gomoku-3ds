@@ -9,7 +9,7 @@ Referee::~Referee() {
 }
 
 char Referee::vision(char *v, char x, char y, char direction, bool lookBack) {
-  char a;
+  char vec[1][1];
 
   switch (direction) {
 
