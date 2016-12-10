@@ -1,8 +1,6 @@
 #ifndef REFEREE_H_
 # define REFEREE_H_
 
-static int s_direction[8][2] = { {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0} };
-
 typedef enum direction {
   NORTH_WEST,
   NORTH,
@@ -14,12 +12,14 @@ typedef enum direction {
   WEST,
 } e_direction;
 
+static int s_direction[8][2] = { {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0} };
+
 class Referee {
-    protected:
+protected:
 	char (& board)[19][19];
 
-        char vision(char *v, char x, char y, char direction, bool lookBack = false);
     public:
+        char vision(char *v, int x, int y, int direction, bool lookBack = false);
 	Referee(char (& board)[19][19]);
         virtual ~Referee();
         bool CanPlace(char player, char x, char y);

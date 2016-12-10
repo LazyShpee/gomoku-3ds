@@ -41,6 +41,8 @@ GameState Game::Update(int dtms, void *dataPtr) {
 }
 
 void Game::Draw(void *dataPtr) {
+    char v[20];
+
     TopScreen.GetFrameBuffer();
     BottomScreen.GetFrameBuffer();
 
@@ -55,4 +57,6 @@ void Game::Draw(void *dataPtr) {
         for (size_t _y = 0; _y < 19; _y++)
             if (board[_x][_y])
                 BottomScreen.DrawImage(Sprites, BX + _x * 10, BY + _y * 10, (board[_x][_y] - 1) * 10, 0, 10, 10);
+    ref.vision(v, px, py, 3);
+    TopScreen.DrawText(FantasqueFont, 1, 40, std::string(v));
 }
