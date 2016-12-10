@@ -17,16 +17,19 @@ class Game : public IFrame {
         u32 kDown;
         u32 kUp;
         u32 kHeld;
-        touchPosition posTouch;
+        touchPosition tPos;
 
         /* Screens */
         Screen<TOP_WIDTH, TOP_HEIGHT, GFX_TOP, GFX_LEFT> TopScreen;
         Screen<BOTTOM_WIDTH, BOTTOM_HEIGHT, GFX_BOTTOM, GFX_LEFT> BottomScreen;
 
         /* Images */
-        Image<400, 240> TopBg;
-	    Image<100, 100> Sprites;
-    	Image<320, 240> BottomBg;
+        Image<I_TOPBG_W, I_TOPBG_H> TopBg;
+    	Image<I_BOTTOMBG_W, I_BOTTOMBG_H> BottomBg;
+	    Image<I_SPRITES_W, I_SPRITES_H> Sprites;
+	    Image<I_GOBAN_W, I_GOBAN_H> Goban;
+
+        Font<I_FANTASQUEFONT_W, I_FANTASQUEFONT_H> FantasqueFont;
 
         /* Game data */
         char board[19][19];
@@ -34,12 +37,14 @@ class Game : public IFrame {
         char lastX;
         char lastY;
 
+        size_t px, py;
+
         void UpdateBoard(char mx, char my); // Update the board base on last move played
     public:
         Game();
         virtual ~Game();
         GameState Update(int dtms, void *dataPtr);
-        void Draw();
+        void Draw(void *dataPtr);
 };
 
 #endif

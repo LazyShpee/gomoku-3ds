@@ -7,7 +7,8 @@
 # include <3ds.h>
 # include <string>
 # include <assert.h>
-# include "Assets.hpp"
+
+# include "../include/Images.hpp"
 
 # define TOP_HEIGHT         240 // Top screen height
 # define TOP_WIDTH          400 // Top screen width
@@ -15,7 +16,7 @@
 
 # define BOTTOM_HEIGHT      240 // Bottom screen height
 # define BOTTOM_WIDTH       320 // Bottom screen width
-# define BOTTOM_SIZE           (BOTTOM_HEIGHT * BOTTOM_WIDTH)
+# define BOTTOM_SIZE        (BOTTOM_HEIGHT * BOTTOM_WIDTH)
 
 # define C_WHITE    0xFFFFFF
 # define C_RED      0xFF0000
@@ -23,6 +24,7 @@
 # define C_BLUE     0x0000FF
 # define C_BLACK    0x000000
 # define C_ALPHA    0xFF1CCC
+# define C_NONE     -1
 
 # define RGB_TO_I(r, g, b) (r << 16 | g << 8 | b)
 # define I_TO_R(i) ((i & 0xFF << 16) >> 16)
@@ -137,7 +139,7 @@ class Screen : public Image<WIDTH, HEIGHT> {
         }
 
         template<size_t W, size_t H>
-        void DrawImage(Image<W, H> & img, size_t x, size_t y, size_t ix = 0, size_t iy = 0, size_t iw = 0, size_t ih = 0, int recolor = -1) {
+        void DrawImage(Image<W, H> & img, int x, int y, size_t ix = 0, size_t iy = 0, size_t iw = 0, size_t ih = 0, int recolor = -1, int forceColor = -1) {
             int col;
             if (!iw) iw = img.GetWidth() - ix;
             if (!ih) ih = img.GetHeight() - iy;
@@ -145,7 +147,9 @@ class Screen : public Image<WIDTH, HEIGHT> {
                 for (size_t cy = iy; cy < iy + ih; cy++) {
                     col = img.GetPixel(cx, cy);
                     if (col >= 0) {
-                        if (recolor >= 0)
+                        if (forceColor >= 0)
+                            col = forceColor;
+                        else if (recolor >= 0)
                             col = RGB_TO_I((I_TO_R(recolor)+I_TO_R(col))/2, (I_TO_G(recolor)+I_TO_G(col))/2, (I_TO_B(recolor)+I_TO_B(col))/2);
                         this->SetPixel(x + cx - ix, y + cy - iy, col);
                     }
@@ -154,14 +158,19 @@ class Screen : public Image<WIDTH, HEIGHT> {
         }
 
         template<size_t W, size_t H>
-        void DrawText(Font<W, H> & font, size_t x, size_t y, std::string text, size_t spacing = 0, int recolor = -1) {
+        void DrawText(Font<W, H> & font, int x, int y, std::string text, size_t spacing = 0, int recolor = -1, int forceColor = -1, char scale = 1) {
             const char *s = text.c_str();
             size_t cx = x, cy = y;
-            Letter let;
+            Letter let = {0, 0, W, H};
             for (size_t i = 0; s[i]; i++) {
-                font.GetLetter(s[i], &let);
-                this->DrawImage(font, cx, cy, let.x, let.y, let.w, let.h, recolor);
-                cx += let.w + spacing;
+                if (s[i] == '\n') {
+                    cy += let.h + spacing;
+                    cx = x;
+                } else {
+                    font.GetLetter(s[i], &let);
+                    this->DrawImage(font, cx, cy, let.x, let.y, let.w, let.h, recolor, forceColor);
+                    cx += let.w + spacing;
+                }
             }
         }
 };

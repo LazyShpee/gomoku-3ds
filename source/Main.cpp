@@ -3,9 +3,10 @@
 #include <sys/time.h>
 #include <string.h>
 
+#include "../include/Images.hpp"
 #include "../include/Game.hpp"
 #include "../include/MainMenu.hpp"
-int main()
+int main(int ac, char **av, char **env)
 {
 	GameState retState;
 	struct timeval timeNow;
@@ -20,27 +21,30 @@ int main()
 	Game * game = new Game;
 	MainMenu * menu = new MainMenu;
 	IFrame * currentFrame = menu;
-	int dataPtr;
+	char *dataPtr = (char *)"BITE";
 
 	while (aptMainLoop())
 	{
 		gspWaitForVBlank(); // Wait for next frame
 		hidScanInput(); // Read inputs
 
-		timeThen = timeNow.tv_sec * 1000 + timeNow.tv_usec / 1000;
+		timeThen = timeNow.tv_sec * 1000000 + timeNow.tv_usec;
 		gettimeofday(&timeNow, NULL);
-		dtms = timeNow.tv_sec * 1000 + timeNow.tv_usec  / 1000 - timeThen; // Calc time in ms since last update
+		dtms = timeNow.tv_sec * 1000000 + timeNow.tv_usec - timeThen; // Calc time in ms since last update
 
 		retState = currentFrame->Update(dtms, (void *)&dataPtr); // Update current frame
 
 		if (retState == ST_NEWGAME) {
 			delete game;
 			game = new Game;
+			currentFrame = game;
+		} else if (retState == ST_MENU) {
+			currentFrame = menu;
 		} else if (retState == ST_QUIT) {
 			break;
 		}
 
-		currentFrame->Draw(); // Draw current frame
+		currentFrame->Draw((void *)&dataPtr); // Draw current frame
 
 		gfxFlushBuffers(); // Clear currently displayed frame buffer
 		gfxSwapBuffers(); // Swap frame buffer
