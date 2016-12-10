@@ -4,7 +4,7 @@
 Game::Game() :
     TopBg(TopBg_bgr, 0xea00ed), BottomBg(BottomBg_bgr), Sprites(Sprites_bgr, 0xac00e5),
     Goban(Goban_bgr), FantasqueFont(FantasqueFont_bgr, "?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!,.;:/\\_-()[]{}<>^`|\"'#~& @+=%$£°€*§", C_ALPHA),
-    player(1), lastX(-1), lastY(-1) {
+    player(1), lastX(-1), lastY(-1), ref(board) {
 	for (size_t _x = 0; _x < 19; _x++)
 		for (size_t _y = 0; _y < 19; _y++)
 			board[_x][_y] = 0;
@@ -18,14 +18,13 @@ GameState Game::Update(int dtms, void *dataPtr) {
 	kHeld = hidKeysHeld();
     hidTouchRead(&tPos);
 
-    if (kDown & KEY_TOUCH)
-        if (tPos.px >= 65 && tPos.px <= 254 && tPos.py >= 25 && tPos.py <= 214) {
-            px = (tPos.px - 65) / 10;
-            py = (tPos.py - 25) / 10;
-            if (!board[px][py]) {
+    if (kDown & KEY_TOUCH) // Touch down event
+        if (tPos.px >= 65 && tPos.px <= 254 && tPos.py >= 25 && tPos.py <= 214) { // Check cursor in board
+            px = (tPos.px - 65) / 10; // Intersect X
+            py = (tPos.py - 25) / 10; // Intersect Y
+            if (ref.CanPlace(player, px, py)) {
                 board[px][py] = player;
-                if (player == 1) player = 2;
-                else player = 1;
+                player = !(player - 1) + 1;
             }
         }
 

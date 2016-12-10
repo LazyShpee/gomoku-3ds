@@ -7,6 +7,7 @@
 # include "../include/GameState.hpp"
 # include "../include/IFrame.hpp"
 # include "../include/Graphics.hpp"
+# include "../include/Referee.hpp"
 
 #define BX 65 // Board Start X position
 #define BY 25 // Board Start Y position
@@ -36,6 +37,8 @@ class Game : public IFrame {
         char player;
         char lastX;
         char lastY;
+
+        Referee ref;
 
         size_t px, py;
 
