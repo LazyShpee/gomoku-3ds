@@ -4,18 +4,6 @@
 # include <stdlib.h>
 
 namespace Board {
-
-    static int directions[8][2] = {
-        {-1, -1},
-        {0, -1},
-        {1, -1},
-        {1, 0},
-        {1, 1},
-        {0, 1},
-        {-1, 1},
-        {-1, 0}
-    };
-
     typedef struct s_tile {
         int x; // X coord
         int y; // Y coord

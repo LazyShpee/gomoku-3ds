@@ -1,5 +1,16 @@
 #include "../include/Board.hpp"
 
+static int directions[8][2] = {
+        {-1, -1},
+        {0, -1},
+        {1, -1},
+        {1, 0},
+        {1, 1},
+        {0, 1},
+        {-1, 1},
+        {-1, 0}
+    };
+
 Board::t_tile **Board::makeNewBoard(int w, int h) {
     t_tile **board;
 
@@ -19,7 +30,7 @@ Board::t_tile **Board::makeNewBoard(int w, int h) {
         for (int y = 0; y < h; y++)
             for (int s = 0; s < 8; s++) {
                 t_tile *cur = &board[x][y];
-                int dx = Board::directions[s][0], dy = Board::directions[s][1];
+                int dx = directions[s][0], dy = directions[s][1];
                 if (((dx < 0 && x > 0) || (dx > 0 && x < w - 1) || !dx) &&
                     ((dy < 0 && y > 0) || (dy > 0 && y < h - 1) || !dy))
                     cur->sides[s] = &board[x + dx][y + dy];

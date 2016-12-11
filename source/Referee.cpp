@@ -1,6 +1,9 @@
 #include "../include/Referee.hpp"
 
-Referee::Referee(char (& board)[19][19]) : board(board) {
+
+static int s_direction[8][2] = { {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0} };
+
+Referee::Referee(Board::t_tile **board) : board(board) {
 
 }
 
@@ -19,7 +22,7 @@ char Referee::vision(char *v, int x, int y, int direction, bool lookBack) {
       t_x -= dir[0];
     }
     while (t_y != y && t_x != x) {
-      *v = board[t_x][t_y] + 48;
+      *v = (char)board[t_x][t_y].p + 48;
       v++;
       pos++;
       t_y += dir[1];
@@ -27,7 +30,7 @@ char Referee::vision(char *v, int x, int y, int direction, bool lookBack) {
     }
   }
   while (t_y >=0 && t_x >=0 && t_y < 19 && t_x < 19) {
-    *v = board[t_x][t_y] + 48;
+    *v = (char)board[t_x][t_y].p + 48;
     v++;
     t_y += dir[1];
     t_x += dir[0];
@@ -36,12 +39,12 @@ char Referee::vision(char *v, int x, int y, int direction, bool lookBack) {
   return pos;
 }
 
-bool Referee::CanPlace(char player, char x, char y) {
-  if (board[x][y]) return false;
+bool Referee::CanPlace(char player, int x, int y) {
+  if (board[x][y].p) return false;
   return true;
 }
 
-bool Referee::UpdateBoard(char x, char y) {
+bool Referee::UpdateBoard(int x, int y) {
   //char v[20];
 
   //vision(v, x, y, true);
