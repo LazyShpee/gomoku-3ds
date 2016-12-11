@@ -8,6 +8,7 @@
 # include "../include/IFrame.hpp"
 # include "../include/Graphics.hpp"
 # include "../include/Referee.hpp"
+# include "../include/Board.hpp"
 
 #define BX 65 // Board Start X position
 #define BY 25 // Board Start Y position
@@ -33,12 +34,12 @@ class Game : public IFrame {
         Font<I_FANTASQUEFONT_W, I_FANTASQUEFONT_H> FantasqueFont;
 
         /* Game data */
-        char board[19][19];
+        Board::t_tile **board;
         char player;
         char lastX;
         char lastY;
 
-        Referee ref;
+        //Referee ref;
 
         size_t px, py;
 
