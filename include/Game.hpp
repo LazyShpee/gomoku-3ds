@@ -36,8 +36,6 @@ class Game : public IFrame {
         /* Game data */
         Board::t_tile **board;
         char player;
-        char lastX;
-        char lastY;
 
         //Referee ref;
 

@@ -4,7 +4,7 @@
 Game::Game() :
     TopBg(TopBg_bgr, 0xea00ed), BottomBg(BottomBg_bgr), Sprites(Sprites_bgr, 0xac00e5),
     Goban(Goban_bgr), FantasqueFont(FantasqueFont_bgr, "?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!,.;:/\\_-()[]{}<>^`|\"'#~& @+=%$£°€*§", C_ALPHA),
-    board(Board::makeNewBoard(19, 19)), player(1), lastX(-1), lastY(-1) {}
+    board(Board::makeNewBoard(19, 19)), player(1), px(0), py(0) {}
 
 Game::~Game() {
     Board::destroyBoard(board, 19, 19);
@@ -54,13 +54,15 @@ void Game::Draw(void *dataPtr) {
             if (board[_x][_y].p)
                 BottomScreen.DrawImage(Sprites, BX + _x * 10, BY + _y * 10, (board[_x][_y].p - 1) * 10, 0, 10, 10);
     for (int d = 0; d < 8; d++) {
-        int x = 0;
-        Board::t_tile *tmp = &board[px][py];
-        while (tmp) {
-            v[x++] = tmp->p + 48;
-            tmp = tmp->sides[d];
-        }
-        v[x] = 0;
-        TopScreen.DrawText(FantasqueFont, 0, 40 + d * 14, std::string(v));
+        std::stringstream bite;
+        // int x = 0;
+        // Board::t_tile *tmp = &board[px][py];
+        // while (tmp) {
+        //     v[x++] = tmp->p + 48;
+        //     tmp = tmp->sides[d];
+        // }
+        // v[x] = 0;
+        bite << board[px][py].dist[d];
+        TopScreen.DrawText(FantasqueFont, 0, 40 + d * 14, bite.str());
     }
 }

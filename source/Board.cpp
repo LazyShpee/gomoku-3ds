@@ -23,7 +23,16 @@ Board::t_tile **Board::makeNewBoard(int w, int h) {
             cur->y = y;
             cur->p = 0;
             cur->sides = (t_tile **)malloc(sizeof(t_tile *) * 8);
-            for (int s = 0; s < 8; s++) cur->sides[s] = NULL;
+            cur->dist = (int *)malloc(sizeof(int) * 8);
+            for (int s = 0; s < 8; s++) {
+                int _x = 18, _y = 18;
+                if (directions[s][0] < 0) _x = x;
+                else if (directions[s][0] > 0) _x = w - x - 1;
+                if (directions[s][1] < 0) _y = y;
+                else if (directions[s][1] > 0) _y = h - y - 1;
+                cur->dist[s] = _x > _y ? _y : _x;
+                cur->sides[s] = NULL;
+            }
         }
     }
     for (int x = 0; x < w; x++)
@@ -43,6 +52,7 @@ void Board::destroyBoard(Board::t_tile **board, int w, int h) {
     for (int x = 0; x < w; x++) {
         for (int y = 0; y < h; y++) {
             free(board[x][y].sides);
+            free(board[x][y].dist);
         }
         free(board[x]);
     }

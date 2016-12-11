@@ -9,6 +9,7 @@ namespace Board {
         int y; // Y coord
         int p; // Piece on tile (0 for none)
         struct s_tile **sides;
+        int *dist;
     } t_tile;
 
     t_tile **makeNewBoard(int w, int h);
