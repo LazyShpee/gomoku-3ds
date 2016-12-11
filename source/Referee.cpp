@@ -52,34 +52,23 @@ bool Referee::DoubleThree(char player, int x, int y) {
     int p = player;
     int e = INVP(p);
     int dx = directions[d][0], dy = directions[d][1];
-    int count_p = 0;
-
-    if (board[x][y].dist[d] > 3 && board[x][y].dist[(d + 4) % 8] > 0 &&
-	!board[x - dx][y - dy].p && !board[x + dx * 4][y + dy * 4].p) {
-      for (int d_b = 0; d_b < 4; d_b++) {
-	if (board[x + dx * d_b][y + dy * d_b].p == p) count_p++;
-	if (board[x + dx * d_b][y + dy * d_b].p == e) {
-	  count_p = 0;
+    int count_p;
+    for (int i = 0; i < 2; i++)
+      if (board[x][y].dist[d] > 3 - i && board[x][y].dist[(d + 4) % 8] > 0 + i &&
+	  !board[x - dx * (i + 1)][y - dy * (i + 1)].p && !board[x + dx * (4 - i)][y + dy * (4 - i)].p) {
+	count_p = 0;
+	for (int d_b = 0 - i; d_b < 4 - i; d_b++) {
+	  if (board[x + dx * d_b][y + dy * d_b].p == p) count_p++;
+	  if (board[x + dx * d_b][y + dy * d_b].p == e) {
+	    count_p = 0;
+	    break;
+	  }
+	}
+	if (count_p == 2) {
+	  nb++;
 	  break;
 	}
       }
-      if (count_p == 2) {
-	nb++;
-	continue;
-      }
-    }
-    count_p = 0;
-    if (board[x][y].dist[d] > 2 && board[x][y].dist[(d + 4) % 8] > 1 &&
-	!board[x - dx * 2][y - dy * 2].p && !board[x + dx * 3][y + dy * 3].p) {
-      for (int d_b = -1; d_b < 3; d_b++) {
-	if (board[x + dx * d_b][y + dy * d_b].p == p) count_p++;
-	if (board[x + dx * d_b][y + dy * d_b].p == e) {
-	  count_p = 0;
-	  break;
-	}
-      }
-      if (count_p == 2) nb++;
-    }
   }
   if (nb > 1) return true;
   return false;
