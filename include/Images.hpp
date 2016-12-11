@@ -9,6 +9,9 @@
 # include "ButtonBack_bgr.h"
 # define I_BUTTONBACK_W 200
 # define I_BUTTONBACK_H 50
+# include "ButtonsGame_bgr.h"
+# define I_BUTTONSGAME_W 350
+# define I_BUTTONSGAME_H 50
 # include "FantasqueFont_bgr.h"
 # define I_FANTASQUEFONT_W 1090
 # define I_FANTASQUEFONT_H 19
@@ -21,6 +24,9 @@
 # include "SailorMercury_bgr.h"
 # define I_SAILORMERCURY_W 138
 # define I_SAILORMERCURY_H 240
+# include "ScoreFont_bgr.h"
+# define I_SCOREFONT_W 207
+# define I_SCOREFONT_H 40
 # include "Sprites_bgr.h"
 # define I_SPRITES_W 100
 # define I_SPRITES_H 100

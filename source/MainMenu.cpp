@@ -7,6 +7,12 @@
 # define BTN_X_MODE 60
 # define BTN_Y_MODE 65
 
+# define BTN_X_RESUME 60
+# define BTN_Y_RESUME 120
+
+# define BTN_X_QUIT 60
+# define BTN_Y_QUIT 175
+
 MainMenu::MainMenu() :
     TopBg(TopBg_bgr), BottomBg(BottomBg_bgr),
     SailorMars(SailorMars_bgr, 0xa81715), SailorMercury(SailorMercury_bgr, 0x3f64a1),
@@ -32,6 +38,10 @@ GameState MainMenu::Update(int dtms, void *dataPtr) {
     if (kDown & KEY_TOUCH) {
         if (BTN_COLLIDE(BTN_X_NEWGAME, BTN_Y_NEWGAME, tPos.px, tPos.py))
             return ST_NEWGAME;
+        else if (BTN_COLLIDE(BTN_X_RESUME, BTN_Y_RESUME, tPos.px, tPos.py))
+            return ST_RESUME;
+        else if (BTN_COLLIDE(BTN_X_QUIT, BTN_Y_QUIT, tPos.px, tPos.py))
+            return ST_QUIT;
     }
 
     return ST_KEEP;
@@ -47,6 +57,7 @@ void MainMenu::Draw(void *dataPtr) {
     TopScreen.DrawImage(Title, 25, Title_y, 0, 0, 0, 0, 0x23AF34);
 
     BottomScreen.DrawImage(BottomBg, 0, 0);
+
     BottomScreen.DrawImage(ButtonBack, BTN_X_NEWGAME, BTN_Y_NEWGAME);
     BottomScreen.DrawText(FantasqueFont, BTN_X_NEWGAME + 60, BTN_Y_NEWGAME + 15, "NEW GAME", 0, 0x77FF77);
 
@@ -55,8 +66,9 @@ void MainMenu::Draw(void *dataPtr) {
     BottomScreen.DrawText(FantasqueFont, BTN_X_MODE + 80, BTN_Y_MODE + 5, "MODE:", 0, 0x77FF77);
     BottomScreen.DrawText(FantasqueFont, BTN_X_MODE + 20, BTN_Y_MODE + 25, GM, 0, 0x77FF77);
 
-    // Debug
-    std::stringstream dbg;
-    dbg << "Debug: " << tPos.px << " - " << tPos.py << "\n" << (kDown & KEY_TOUCH) << "\n" << BTN_COLLIDE(60, 10, tPos.px, tPos.py);
-    BottomScreen.DrawText(FantasqueFont, 10, 170, dbg.str());
+    BottomScreen.DrawImage(ButtonBack, BTN_X_RESUME, BTN_Y_RESUME);
+    BottomScreen.DrawText(FantasqueFont, BTN_X_RESUME + 70, BTN_Y_RESUME + 15, "RESUME", 0, 0x77FF77);
+
+    BottomScreen.DrawImage(ButtonBack, BTN_X_QUIT, BTN_Y_QUIT);
+    BottomScreen.DrawText(FantasqueFont, BTN_X_QUIT + 80, BTN_Y_QUIT + 15, "QUIT", 0, 0x77FF77);
 }

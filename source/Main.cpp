@@ -40,6 +40,8 @@ int main(int ac, char **av, char **env)
 			currentFrame = game;
 		} else if (retState == ST_MENU) {
 			currentFrame = menu;
+		} else if (retState == ST_RESUME) {
+			currentFrame = game;
 		} else if (retState == ST_QUIT) {
 			break;
 		}

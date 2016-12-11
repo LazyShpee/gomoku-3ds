@@ -13,6 +13,8 @@
 #define BX 65 // Board Start X position
 #define BY 25 // Board Start Y position
 
+#define BUT_HIT(x, y, cx, cy) (cx < x + I_BUTTONSGAME_H && cx > x && cy < y + I_BUTTONSGAME_H && cy > y)
+
 class Game : public IFrame {
     protected:
         /* Inputs */
@@ -29,9 +31,11 @@ class Game : public IFrame {
         Image<I_TOPBG_W, I_TOPBG_H> TopBg;
     	Image<I_BOTTOMBG_W, I_BOTTOMBG_H> BottomBg;
 	    Image<I_SPRITES_W, I_SPRITES_H> Sprites;
+	    Image<I_BUTTONSGAME_W, I_BUTTONSGAME_H> Buttons;
 	    Image<I_GOBAN_W, I_GOBAN_H> Goban;
 
         Font<I_FANTASQUEFONT_W, I_FANTASQUEFONT_H> FantasqueFont;
+        Font<I_SCOREFONT_W, I_SCOREFONT_H> ScoreFont;
 
         /* Game data */
         Board::t_tile **board;
@@ -42,6 +46,7 @@ class Game : public IFrame {
         size_t px, py;
 
         int *scores;
+        char mode, piece;
 
         void UpdateBoard(char mx, char my); // Update the board base on last move played
     public:
