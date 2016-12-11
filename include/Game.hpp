@@ -37,9 +37,11 @@ class Game : public IFrame {
         Board::t_tile **board;
         char player;
 
-        //Referee ref;
+        Referee ref;
 
         size_t px, py;
+
+        int *scores;
 
         void UpdateBoard(char mx, char my); // Update the board base on last move played
     public:

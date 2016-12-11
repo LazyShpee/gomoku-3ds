@@ -3,27 +3,17 @@
 
 # include "../include/Board.hpp"
 
-typedef enum direction {
-  NORTH_WEST,
-  NORTH,
-  NORTH_EAST,
-  EAST,
-  SOUTH_EAST,
-  SOUTH,
-  SOUTH_WEST,
-  WEST,
-} e_direction;
+# define INVP(p) (p == 1 ? 2 : 1)
 
 class Referee {
 protected:
 	Board::t_tile **board;
-
-    public:
+public:
         char vision(char *v, int x, int y, int direction, bool lookBack = false);
 	Referee(Board::t_tile **board);
         virtual ~Referee();
         bool CanPlace(char player, int x, int y);
-        bool UpdateBoard(int x, int y);
+        bool UpdateBoard(int x, int y, int *scores);
 };
 
 #endif // !REFEREE_H_

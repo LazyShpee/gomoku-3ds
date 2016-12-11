@@ -4,7 +4,11 @@
 Game::Game() :
     TopBg(TopBg_bgr, 0xea00ed), BottomBg(BottomBg_bgr), Sprites(Sprites_bgr, 0xac00e5),
     Goban(Goban_bgr), FantasqueFont(FantasqueFont_bgr, "?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!,.;:/\\_-()[]{}<>^`|\"'#~& @+=%$£°€*§", C_ALPHA),
-    board(Board::makeNewBoard(19, 19)), player(1), px(0), py(0) {}
+    board(Board::makeNewBoard(19, 19)), player(1), ref(board),
+    px(0), py(0) {
+        scores = (int *)malloc(sizeof(int) * 2);
+        scores[0] = scores[1] = 0;
+    }
 
 Game::~Game() {
     Board::destroyBoard(board, 19, 19);
@@ -20,8 +24,11 @@ GameState Game::Update(int dtms, void *dataPtr) {
         if (tPos.px >= 65 && tPos.px <= 254 && tPos.py >= 25 && tPos.py <= 214) { // Check cursor in board
             px = (tPos.px - 65) / 10; // Intersect X
             py = (tPos.py - 25) / 10; // Intersect Y
-            board[px][py].p = player;
-            player = !(player - 1) + 1;
+            if (ref.CanPlace(player, px, py)) {
+                board[px][py].p = player;
+                ref.UpdateBoard(px, py, scores);
+                player = !(player - 1) + 1;
+            }
         }
 
     if (kHeld & KEY_START && kHeld & KEY_SELECT)
@@ -37,16 +44,18 @@ GameState Game::Update(int dtms, void *dataPtr) {
 }
 
 void Game::Draw(void *dataPtr) {
-    char v[20];
+    std::stringstream score;
 
     TopScreen.GetFrameBuffer();
     BottomScreen.GetFrameBuffer();
 
+    score << scores[0] << " - " << scores[1];
     std::stringstream dbg;
     dbg << px << " - " << py;
     TopScreen.DrawImage(TopBg, 0, 0);
     BottomScreen.DrawImage(BottomBg, 0, 0);
     TopScreen.DrawText(FantasqueFont, 5, 5, dbg.str());
+    TopScreen.DrawText(FantasqueFont, 1, 200, score.str());
     BottomScreen.DrawImage(Goban, 59, 19);
 
     for (size_t _x = 0; _x < 19; _x++)

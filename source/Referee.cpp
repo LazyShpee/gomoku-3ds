@@ -1,7 +1,15 @@
 #include "../include/Referee.hpp"
 
-
-static int s_direction[8][2] = { {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0} };
+static int directions[8][2] = {
+    {-1, -1},
+    {0, -1},
+    {1, -1},
+    {1, 0},
+    {1, 1},
+    {0, 1},
+    {-1, 1},
+    {-1, 0}
+  };
 
 Referee::Referee(Board::t_tile **board) : board(board) {
 
@@ -11,8 +19,8 @@ Referee::~Referee() {
 
 }
 
-char Referee::vision(char *v, int x, int y, int direction, bool lookBack) {
-  int dir[2] = {s_direction[direction][0], s_direction[direction][1]};
+char Referee::vision(char *v, int x, int y, int d, bool lookBack) {
+  int dir[2] = {directions[d][0], directions[d][1]};
   int pos = 0;
   int t_x = x, t_y = y;
 
@@ -44,9 +52,19 @@ bool Referee::CanPlace(char player, int x, int y) {
   return true;
 }
 
-bool Referee::UpdateBoard(int x, int y) {
-  //char v[20];
-
-  //vision(v, x, y, true);
+bool Referee::UpdateBoard(int x, int y, int *scores) {
+  for (int d = 0; d < 8; d++) {
+    int dx = directions[d][0], dy = directions[d][1];
+    int p = board[x][y].p;
+    int e = INVP(p);
+    if (board[x][y].dist[d] >= 3) {
+      if (board[x + dx][y + dy].p == e && board[x + dx * 2][y + dy * 2].p == e &&
+        board[x + dx * 3][y + dy * 3].p == p) {
+          board[x + dx][y + dy].p = 0;
+          board[x + dx * 2][y + dy * 2].p = 0;
+          scores[p - 1] += 2;
+        }
+    }
+  }
   return false;
 }
