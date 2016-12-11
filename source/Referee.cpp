@@ -46,16 +46,71 @@ char Referee::vision(char *v, int x, int y, int d, bool lookBack) {
   return pos;
 }
 
-bool Referee::DoubleThree(char player, int x, int y) {
-  int nb = 0;
+/*
+bool Referee::WiningPosition(int x, int y) {
+  int p = board[x][y].p;
+  int e = INVP(p);
   for (int d = 0; d < 8; d++) {
-    int p = player;
-    int e = INVP(p);
+    t_tile tmp = board[x][y];
+    int dx = directions[d][0], dy = directions[d][1];
+    int k;
+    while (tmp.p == p) tmp = tmp->side[-dx][-dy];
+    tmp = tmp.side[dx][dy];
+    while (tmp.p == p) {
+      tmp = tmp->side[dx][dy];
+      k++;
+    }
+    if (k > 4) {
+      for (int i = 0; i < 5; i++)
+	tmp = tmp->side[dx][dy];
+      // wining position
+      }
+  }
+}
+*/
+
+bool Referee::Three(char player, int x, int y, int dir) {
+  int p = player;
+  int e = INVP(p);
+  for (int _ = 0; _ < 4; _++) {
+    if (board[x][y].p == p)
+      for (int d = 0; d < 8; d++) {
+	if (d == dir || d == (dir + 4) % 8)
+	  continue;
+	int dx = directions[d][0], dy = directions[d][1];
+	int count_p;
+	for (int i = 0; i < 2; i++)
+	  if (board[x][y].dist[d] > 3 - i && board[x][y].dist[(d + 4) % 8] > 0 + i &&
+	      !board[x - dx * (i + 1)][y - dy * (i + 1)].p &&
+	      !board[x + dx * (4 - i)][y + dy * (4 - i)].p) {
+	    count_p = 0;
+	    for (int d_b = 0 - i; d_b < 4 - i; d_b++) {
+	      if (board[x + dx * d_b][y + dy * d_b].p == p) count_p++;
+	      if (board[x + dx * d_b][y + dy * d_b].p == e) {
+		count_p = 0;
+		break;
+	      }
+	    }
+	    if (count_p == 3)
+	      return true;
+	  }
+      }
+    x += directions[dir][0];
+    y += directions[dir][1];
+  }
+  return false;
+}
+
+bool Referee::DoubleThree(char player, int x, int y) {
+  int p = player;
+  int e = INVP(p);
+  for (int d = 0; d < 8; d++) {
     int dx = directions[d][0], dy = directions[d][1];
     int count_p;
     for (int i = 0; i < 2; i++)
       if (board[x][y].dist[d] > 3 - i && board[x][y].dist[(d + 4) % 8] > 0 + i &&
-	  !board[x - dx * (i + 1)][y - dy * (i + 1)].p && !board[x + dx * (4 - i)][y + dy * (4 - i)].p) {
+	  !board[x - dx * (i + 1)][y - dy * (i + 1)].p &&
+	  !board[x + dx * (4 - i)][y + dy * (4 - i)].p) {
 	count_p = 0;
 	for (int d_b = 0 - i; d_b < 4 - i; d_b++) {
 	  if (board[x + dx * d_b][y + dy * d_b].p == p) count_p++;
@@ -64,13 +119,10 @@ bool Referee::DoubleThree(char player, int x, int y) {
 	    break;
 	  }
 	}
-	if (count_p == 2) {
-	  nb++;
-	  break;
-	}
+	if (count_p == 2)
+	  if (Three(player, x - i, y - i, d)) return true;
       }
   }
-  if (nb > 1) return true;
   return false;
 }
 
