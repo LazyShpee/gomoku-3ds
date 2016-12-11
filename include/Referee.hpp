@@ -9,6 +9,7 @@ class Referee {
 protected:
 	Board::t_tile **board;
 public:
+	bool DoubleThree(char player, int x, int y);
         char vision(char *v, int x, int y, int direction, bool lookBack = false);
 	Referee(Board::t_tile **board);
         virtual ~Referee();
