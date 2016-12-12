@@ -9,9 +9,9 @@ class Referee {
 protected:
 	Board::t_tile **board;
 	bool DoubleThree(char player, int x, int y);
-  bool Three(char player, int x, int y, int dir);
-	bool WiningPosition(int x, int y);
+	bool Three(char player, int x, int y, int dir);
 public:
+	int WiningPosition(int x, int y);
         char vision(char *v, int x, int y, int direction, bool lookBack = false);
 	Referee(Board::t_tile **board);
         virtual ~Referee();

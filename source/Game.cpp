@@ -61,7 +61,6 @@ GameState Game::Update(int dtms, void *dataPtr) {
 }
 
 void Game::Draw(void *dataPtr) {
-
     TopScreen.GetFrameBuffer();
     BottomScreen.GetFrameBuffer();
 
@@ -99,6 +98,11 @@ void Game::Draw(void *dataPtr) {
         BottomScreen.DrawImage(Buttons, RIGHT_X - 20 * (piece == 2), RED_Y, 0, 0, 50, 50);
         BottomScreen.DrawImage(Buttons, RIGHT_X - 20 * (piece == 2), RED_Y, 300, 0, 50, 50);
     }
+
+    int ret = ref.WiningPosition(px, py);
+    std::stringstream ret_v;
+    ret_v << ret;
+    TopScreen.DrawText(FantasqueFont, 1, 60, ret_v.str());
 
     for (size_t _x = 0; _x < 19; _x++)
         for (size_t _y = 0; _y < 19; _y++)

@@ -46,28 +46,43 @@ char Referee::vision(char *v, int x, int y, int d, bool lookBack) {
   return pos;
 }
 
-/*
-bool Referee::WiningPosition(int x, int y) {
+int Referee::WiningPosition(int x, int y) {
+  if (!board[x][y].p)
+    return 3;
+  int ret = 0;
   int p = board[x][y].p;
   int e = INVP(p);
   for (int d = 0; d < 8; d++) {
-    t_tile tmp = board[x][y];
+    Board::t_tile *tmp = &board[x][y];
     int dx = directions[d][0], dy = directions[d][1];
-    int k;
-    while (tmp.p == p) tmp = tmp->side[-dx][-dy];
-    tmp = tmp.side[dx][dy];
-    while (tmp.p == p) {
-      tmp = tmp->side[dx][dy];
+    int k = 1;
+    while (tmp->sides[(d + 4) % 8] && tmp->sides[(d + 4) % 8]->p == p) tmp = tmp->sides[(d + 4) % 8];
+    while (tmp->sides[d] && tmp->sides[d]->p == p) {
+      tmp = tmp->sides[d];
       k++;
     }
     if (k > 4) {
-      for (int i = 0; i < 5; i++)
-	tmp = tmp->side[dx][dy];
-      // wining position
+      ret = 2;
+      k = 10 - k;
+      if (k < 1) return 2;
+      for (int _ = 5 - k; _; _--) tmp = tmp->sides[(d + 4) % 8];
+      while (k--) {
+	for (int d2 = 0; d2 < 8; d2++) {
+	  if (d == d2 || d == (d2 + 4) % 8)
+	    continue;
+	  if (tmp->sides[d2] && tmp->sides[d2]->p == p &&
+	      tmp->sides[d2]->sides[d2] && tmp->sides[d2]->sides[d2]->p != p &&
+	      tmp->sides[(d2 + 4) % 8] && tmp->sides[(d2 + 4) % 8]->p != p) {
+	    ret = 1;
+	    break;
+	  }
+	}
+	tmp = tmp->sides[(d + 4) % 8];
       }
+    }
   }
+  return ret;
 }
-*/
 
 bool Referee::Three(char player, int x, int y, int dir) {
   int p = player;
