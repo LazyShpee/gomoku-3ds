@@ -2,16 +2,16 @@
 #include "../include/MainMenu.hpp"
 
 # define BTN_X_NEWGAME 60
-# define BTN_Y_NEWGAME 10
+# define BTN_Y_NEWGAME 5
 
 # define BTN_X_MODE 60
-# define BTN_Y_MODE 65
+# define BTN_Y_MODE 60
 
 # define BTN_X_RESUME 60
-# define BTN_Y_RESUME 120
+# define BTN_Y_RESUME 115
 
 # define BTN_X_QUIT 60
-# define BTN_Y_QUIT 175
+# define BTN_Y_QUIT 170
 
 MainMenu::MainMenu() :
     TopBg(TopBg_bgr), BottomBg(BottomBg_bgr),
@@ -75,4 +75,7 @@ void MainMenu::Draw(void *dataPtr) {
 
     BottomScreen.DrawImage(ButtonBack, BTN_X_QUIT, BTN_Y_QUIT);
     BottomScreen.DrawText(FantasqueFont, BTN_X_QUIT + 80, BTN_Y_QUIT + 15, "QUIT", 0, 0x77FF77);
+
+    BottomScreen.DrawText(FantasqueFont, 5, 223, "copyright 2016 Come MURE-RAVAUD", 0, 0x77FF77);
+
 }

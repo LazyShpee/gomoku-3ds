@@ -1,6 +1,10 @@
 #include "../include/GameOver.hpp"
 
-GameOver::GameOver() : TopBg(TopBg_bgr), BottomBg(BottomBg_bgr) {
+GameOver::GameOver() : TopBg(TopBg_bgr), BottomBg(BottomBg_bgr),
+    SailorMarsBig(SailorMarsBig_bgr, 0xa81715), SailorMercuryBig(SailorMercuryBig_bgr, 0x3f64a1),
+    FantasqueFont(FantasqueFont_bgr, "?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!,.;:/\\_-()[]{}<>^`|\"'#~& @+=%$£°€*§", C_ALPHA),
+    textTaint(-1)
+{
 
 }
 
@@ -20,5 +24,7 @@ void GameOver::Draw(void *dataPtr) {
 
     TopScreen.DrawImage(TopBg, 0, 0);
     BottomScreen.DrawImage(BottomBg, 0, 0);
-
+    if (*((int *)dataPtr) == 1) TopScreen.DrawImage(SailorMercuryBig, 60, 0);
+    else TopScreen.DrawImage(SailorMarsBig, 60, 0);
+    BottomScreen.DrawText(FantasqueFont, 30, 105, "Touch to go back to main menu", textTaint);
 }
