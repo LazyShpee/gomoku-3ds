@@ -19,7 +19,7 @@ MainMenu::MainMenu() :
     Title(Title_bgr, C_ALPHA),
     ButtonBack(ButtonBack_bgr, C_ALPHA),
     FantasqueFont(FantasqueFont_bgr, "?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!,.;:/\\_-()[]{}<>^`|\"'#~& @+=%$£°€*§", C_ALPHA),
-    Ma_x(-I_SAILORMARS_W), Me_x(TOP_WIDTH), Title_y(TOP_HEIGHT),
+    Ma_x(-I_SAILORMARS_W), Me_x(TOP_WIDTH), Title_y(TOP_HEIGHT), timer(0),
     GameMode(PVP)
     {}
 
@@ -28,6 +28,7 @@ MainMenu::~MainMenu() {
 }
 
 GameState MainMenu::Update(int dtms, void *dataPtr) {
+    timer += dtms;
     hidTouchRead(&tPos);
     kDown = hidKeysDown();
 
@@ -76,6 +77,7 @@ void MainMenu::Draw(void *dataPtr) {
     BottomScreen.DrawImage(ButtonBack, BTN_X_QUIT, BTN_Y_QUIT);
     BottomScreen.DrawText(FantasqueFont, BTN_X_QUIT + 80, BTN_Y_QUIT + 15, "QUIT", 0, 0x77FF77);
 
-    BottomScreen.DrawText(FantasqueFont, 5, 223, "copyright 2016 Come MURE-RAVAUD", 0, 0x77FF77);
-
+    if (timer <= 2000000) BottomScreen.DrawText(FantasqueFont, 5, 223, "Copyright 2016 Come MURE-RAVAUD", 0, 0x77FF77);
+    else if (timer <= 4000000) BottomScreen.DrawText(FantasqueFont, 5, 223, "Mention speciale: Jean PLANCHER", 0, 0x77FF77);
+    else timer = 0;
 }

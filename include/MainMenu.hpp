@@ -31,6 +31,7 @@ class MainMenu : public IFrame {
         Font<I_FANTASQUEFONT_W, I_FANTASQUEFONT_H> FantasqueFont;
 
         int Ma_x, Me_x, Title_y;
+        int timer;
 
         enum GameModes {
             PVP = 0,
