@@ -54,6 +54,12 @@ Board::t_tile **Board::makeNewBoard(char **board, int w, int h) {
     return  newBoard;
 }
 
+Board::t_tile **Board::makeNewBoard(Board::t_tile **board, int w, int h) {
+    t_tile **newBoard = makeNewBoard(w, h);
+    restoreBoard(newBoard, board, w, h);
+    return  newBoard;
+}
+
 void Board::destroyBoard(Board::t_tile **board, int w, int h) {
     for (int x = 0; x < w; x++) {
         for (int y = 0; y < h; y++) {
