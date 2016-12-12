@@ -44,7 +44,7 @@ GameState Game::Update(int dtms, void *dataPtr) {
 
     if (!mode && ((int *)dataPtr)[2] == 1 && player == 2) {
         t_vec pos;
-        pos = ais[ai]->think(board, 1);
+        pos = ais[ai]->think(board, scores, player, 1);
         if (ref.CanPlace(player, pos.x, pos.y)) {
             board[pos.x][pos.y].p = player;
             int winPos = ref.WinningPosition(px, py);

@@ -7,7 +7,7 @@ class AIRandom : public IAI {
     public:
         AIRandom();
         virtual ~AIRandom();
-        t_vec think(Board::t_tile **board, int lvl = 1);
+        t_vec think(Board::t_tile **board, int *score, int player, int lvl = 1);
 };
 
 #endif
