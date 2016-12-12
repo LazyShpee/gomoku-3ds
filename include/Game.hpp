@@ -33,6 +33,10 @@ class Game : public IFrame {
 	    Image<I_SPRITES_W, I_SPRITES_H> Sprites;
 	    Image<I_BUTTONSGAME_W, I_BUTTONSGAME_H> Buttons;
 	    Image<I_GOBAN_W, I_GOBAN_H> Goban;
+	    Image<I_SCOREBOARD_W, I_SCOREBOARD_H> ScoreBoard;
+
+        Image<I_SAILORMARS_W, I_SAILORMARS_H> SailorMars;
+        Image<I_SAILORMERCURY_W, I_SAILORMERCURY_H> SailorMercury;
 
         Font<I_FANTASQUEFONT_W, I_FANTASQUEFONT_H> FantasqueFont;
         Font<I_SCOREFONT_W, I_SCOREFONT_H> ScoreFont;

@@ -24,6 +24,9 @@
 # include "SailorMercury_bgr.h"
 # define I_SAILORMERCURY_W 138
 # define I_SAILORMERCURY_H 240
+# include "ScoreBoard_bgr.h"
+# define I_SCOREBOARD_W 131
+# define I_SCOREBOARD_H 54
 # include "ScoreFont_bgr.h"
 # define I_SCOREFONT_W 207
 # define I_SCOREFONT_H 40

@@ -5,6 +5,7 @@
 
 #include "../include/Images.hpp"
 #include "../include/Game.hpp"
+#include "../include/GameOver.hpp"
 #include "../include/MainMenu.hpp"
 int main(int ac, char **av, char **env)
 {
@@ -18,10 +19,11 @@ int main(int ac, char **av, char **env)
 	gfxInitDefault();
 	//gfxSet3D(true); // uncomment if using stereoscopic 3D
 
+	GameOver * gameover = new GameOver;
 	Game * game = new Game;
 	MainMenu * menu = new MainMenu;
 	IFrame * currentFrame = menu;
-	char *dataPtr = (char *)"BITE";
+	int dataPtr = 0;
 
 	while (aptMainLoop())
 	{
@@ -38,13 +40,13 @@ int main(int ac, char **av, char **env)
 			delete game;
 			game = new Game;
 			currentFrame = game;
-		} else if (retState == ST_MENU) {
-			currentFrame = menu;
-		} else if (retState == ST_RESUME) {
-			currentFrame = game;
-		} else if (retState == ST_QUIT) {
-			break;
-		}
+		} else if (retState == ST_GAMEOVER) {
+			delete gameover;
+			gameover = new GameOver;
+			currentFrame = gameover;
+		} else if (retState == ST_MENU) currentFrame = menu;
+		else if (retState == ST_RESUME) currentFrame = game;
+		else if (retState == ST_QUIT) break;
 
 		currentFrame->Draw((void *)&dataPtr); // Draw current frame
 
@@ -52,7 +54,7 @@ int main(int ac, char **av, char **env)
 		gfxSwapBuffers(); // Swap frame buffer
 	}
 	if (game) delete game;
-
+	if (gameover) delete gameover;
 
 	gfxExit();
 	return 0;

@@ -40,10 +40,14 @@ GameState MainMenu::Update(int dtms, void *dataPtr) {
             return ST_NEWGAME;
         else if (BTN_COLLIDE(BTN_X_RESUME, BTN_Y_RESUME, tPos.px, tPos.py))
             return ST_RESUME;
-        else if (BTN_COLLIDE(BTN_X_QUIT, BTN_Y_QUIT, tPos.px, tPos.py))
+        else if (BTN_COLLIDE(BTN_X_MODE, BTN_Y_MODE, tPos.px, tPos.py)) {
+            GameMode = (MainMenu::GameModes)(((int)GameMode + 1) % 2);
+        } else if (BTN_COLLIDE(BTN_X_QUIT, BTN_Y_QUIT, tPos.px, tPos.py))
             return ST_QUIT;
+        else if (tPos.px < 10)
+            return ST_GAMEOVER;
     }
-
+    *((int*)dataPtr) = (int)GameMode;
     return ST_KEEP;
 }
 
