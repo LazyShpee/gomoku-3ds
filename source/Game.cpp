@@ -4,12 +4,14 @@
 #define LEFT_X 5
 #define MENU_Y 5
 #define EDIT_Y 55
-#define SWAP_Y 185
+#define PLUS_Y 123
+#define MINUS_Y 173
 
 #define RIGHT_X 295
 #define BLANK_Y 5
 #define BLUE_Y 55
 #define RED_Y 105
+#define SWAP_Y 185
 
 Game::Game() :
     TopBg(TopBg_bgr, 0xea00ed), BottomBg(BottomBg_bgr),
@@ -52,6 +54,7 @@ GameState Game::Update(int dtms, void *dataPtr) {
                 ((int *)dataPtr)[3] = player;
                 return ST_GAMEOVER;
             }
+            ref.UpdateBoard(pos.x, pos.y, scores);
             player = !(player - 1) + 1;
         }
         return ST_KEEP;
@@ -69,6 +72,7 @@ GameState Game::Update(int dtms, void *dataPtr) {
                     ((int *)dataPtr)[3] = player;
                     return ST_GAMEOVER;
                 }
+                ref.UpdateBoard(px, py, scores);
                 player = !(player - 1) + 1;
             }
         } else if (mode && kHeld & KEY_TOUCH) board[px][py].p = piece;
@@ -76,11 +80,16 @@ GameState Game::Update(int dtms, void *dataPtr) {
     if (kDown & KEY_TOUCH) {
         if (BUT_HIT(LEFT_X, MENU_Y, cx, cy)) return ST_MENU;
         else if (BUT_HIT(LEFT_X, EDIT_Y, cx, cy)) mode = !mode;
-        else if (mode && BUT_HIT(LEFT_X, SWAP_Y, cx, cy)) player = INVP(player);
+        else if (mode && BUT_HIT(LEFT_X, PLUS_Y, cx, cy)) { scores[player - 1] += 2; }
+        else if (mode && BUT_HIT(LEFT_X, MINUS_Y, cx, cy)) { scores[player - 1] -= 2; }
+        else if (mode && BUT_HIT(RIGHT_X - 30, SWAP_Y, cx, cy)) player = INVP(player);
         else if (mode && BUT_HIT(RIGHT_X, BLANK_Y, cx, cy)) piece = 0;
         else if (mode && BUT_HIT(RIGHT_X, BLUE_Y, cx, cy)) piece = 1;
         else if (mode && BUT_HIT(RIGHT_X, RED_Y, cx, cy)) piece = 2;
     }
+
+    if (scores[player - 1] < 0) scores[player - 1] = 0;
+
     return ST_KEEP;
 }
 
@@ -111,9 +120,15 @@ void Game::Draw(void *dataPtr) {
     BottomScreen.DrawImage(Buttons, LEFT_X, EDIT_Y + mode, 150, 0, 50, 50);
 
     if (mode == 1) {
-        BottomScreen.DrawImage(Buttons, LEFT_X, SWAP_Y, 0, 0, 50, 50);
-        BottomScreen.DrawImage(Buttons, LEFT_X, SWAP_Y, 250, 0, 50, 50);
-        BottomScreen.DrawImage(Buttons, LEFT_X + 25, SWAP_Y, 325, 0, 50, 50);
+        BottomScreen.DrawImage(Buttons, LEFT_X, PLUS_Y, 0, 0, 50, 50);
+        BottomScreen.DrawImage(Buttons, LEFT_X, PLUS_Y, 350, 0, 50, 50);
+        BottomScreen.DrawImage(Buttons, LEFT_X, MINUS_Y, 0, 0, 50, 50);
+        BottomScreen.DrawImage(Buttons, LEFT_X, MINUS_Y, 400, 0, 50, 50);
+
+
+        BottomScreen.DrawImage(Buttons, RIGHT_X - 30, SWAP_Y, 0, 0, 50, 50);
+        BottomScreen.DrawImage(Buttons, RIGHT_X - 30, SWAP_Y, 250, 0, 50, 50);
+        BottomScreen.DrawImage(Buttons, RIGHT_X - 30 + 25, SWAP_Y, 325, 0, 50, 50);
 
         BottomScreen.DrawImage(Buttons, RIGHT_X - 20 * (piece == 0), BLANK_Y, 0, 0, 50, 50);
         BottomScreen.DrawImage(Buttons, RIGHT_X - 20 * (piece == 0), BLANK_Y, 200, 0, 50, 50);

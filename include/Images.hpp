@@ -10,7 +10,7 @@
 # define I_BUTTONBACK_W 200
 # define I_BUTTONBACK_H 50
 # include "ButtonsGame_bgr.h"
-# define I_BUTTONSGAME_W 350
+# define I_BUTTONSGAME_W 450
 # define I_BUTTONSGAME_H 50
 # include "FantasqueFont_bgr.h"
 # define I_FANTASQUEFONT_W 1090

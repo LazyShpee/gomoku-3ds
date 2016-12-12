@@ -2,13 +2,13 @@
 
 static int directions[8][2] = {
     {-1, -1},
-    {0, -1},
-    {1, -1},
-    {1, 0},
-    {1, 1},
-    {0, 1},
-    {-1, 1},
-    {-1, 0}
+    { 0, -1},
+    { 1, -1},
+    { 1,  0},
+    { 1,  1},
+    { 0,  1},
+    {-1,  1},
+    {-1,  0}
   };
 
 Referee::Referee(Board::t_tile **board) : board(board) {
@@ -152,10 +152,10 @@ bool Referee::UpdateBoard(int x, int y, int *scores) {
     if (board[x][y].dist[d] >= 3) {
       if (board[x + dx][y + dy].p == e && board[x + dx * 2][y + dy * 2].p == e &&
         board[x + dx * 3][y + dy * 3].p == p) {
-          board[x + dx][y + dy].p = 0;
-          board[x + dx * 2][y + dy * 2].p = 0;
-          scores[p - 1] += 2;
-        }
+        board[x + dx][y + dy].p = 0;
+        board[x + dx * 2][y + dy * 2].p = 0;
+        scores[p - 1] += 2;
+      }
     }
   }
   return false;
