@@ -24,7 +24,7 @@ void GameOver::Draw(void *dataPtr) {
 
     TopScreen.DrawImage(TopBg, 0, 0);
     BottomScreen.DrawImage(BottomBg, 0, 0);
-    if (*((int *)dataPtr) == 1) TopScreen.DrawImage(SailorMercuryBig, 60, 0);
+    if (((int *)dataPtr)[3] == 1) TopScreen.DrawImage(SailorMercuryBig, 60, 0);
     else TopScreen.DrawImage(SailorMarsBig, 60, 0);
     BottomScreen.DrawText(FantasqueFont, 30, 105, "Touch to go back to main menu", textTaint);
 }

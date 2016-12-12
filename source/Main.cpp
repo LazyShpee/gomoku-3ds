@@ -23,7 +23,7 @@ int main(int ac, char **av, char **env)
 	Game * game = new Game;
 	MainMenu * menu = new MainMenu;
 	IFrame * currentFrame = menu;
-	int dataPtr = 0;
+	int dataPtr[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 	while (aptMainLoop())
 	{
@@ -34,7 +34,7 @@ int main(int ac, char **av, char **env)
 		gettimeofday(&timeNow, NULL);
 		dtms = timeNow.tv_sec * 1000000 + timeNow.tv_usec - timeThen; // Calc time in ms since last update
 
-		retState = currentFrame->Update(dtms, (void *)&dataPtr); // Update current frame
+		retState = currentFrame->Update(dtms, (void *)dataPtr); // Update current frame
 
 		if (retState == ST_NEWGAME) {
 			delete game;

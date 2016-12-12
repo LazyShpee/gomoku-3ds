@@ -9,9 +9,11 @@
 # include "../include/Graphics.hpp"
 # include "../include/Referee.hpp"
 # include "../include/Board.hpp"
+# include "../include/AIRandom.hpp"
 
-#define BX 65 // Board Start X position
-#define BY 25 // Board Start Y position
+# define BX 65 // Board Start X position
+# define BY 25 // Board Start Y position
+
 
 #define BUT_HIT(x, y, cx, cy) (cx < x + I_BUTTONSGAME_H && cx > x && cy < y + I_BUTTONSGAME_H && cy > y)
 
@@ -51,6 +53,9 @@ class Game : public IFrame {
 
         int *scores;
         char mode, piece;
+
+        IAI **ais;
+        int ai, nai;
 
         void UpdateBoard(char mx, char my); // Update the board base on last move played
     public:

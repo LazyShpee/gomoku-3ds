@@ -15,9 +15,11 @@ namespace Board {
     t_tile **makeNewBoard(int w, int h);
     t_tile **makeNewBoard(char **board, int w, int h);
     void destroyBoard(t_tile **board, int w, int h);
+    void destroyBoard(char **board, int w, int h);
     void restoreBoard(t_tile **board, char **save, int w, int h);
     void saveBoard(t_tile **board, char **save, int w, int h);
     char **saveBoard(t_tile **board, int w, int h);
+    t_tile **copyBoard(t_tile **board, int w, int h);
 }
 
 #endif

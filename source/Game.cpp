@@ -18,14 +18,22 @@ Game::Game() :
     FantasqueFont(FantasqueFont_bgr, "?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!,.;:/\\_-()[]{}<>^`|\"'#~& @+=%$£°€*§", C_ALPHA),
     ScoreFont(ScoreFont_bgr, "0123456789", C_ALPHA),
     board(Board::makeNewBoard(19, 19)), player(1), ref(board),
-    px(0), py(0), mode(0), piece(0)
+    px(0), py(0), mode(0), piece(0), ai(0)
 {
     scores = (int *)malloc(sizeof(int) * 2);
     scores[0] = scores[1] = 0;
+
+    ais = (IAI **)malloc(sizeof(IAI *) * nai);
+    ais[0] = new AIRandom;
+    nai = 1;
 }
 
 Game::~Game() {
     Board::destroyBoard(board, 19, 19);
+    for (int i=0; i < nai; i++) {
+        if (ais[i]) free(ais[i]);
+    }
+    free(ais);
 }
 
 GameState Game::Update(int dtms, void *dataPtr) {
@@ -34,30 +42,45 @@ GameState Game::Update(int dtms, void *dataPtr) {
 	kHeld = hidKeysHeld();
     hidTouchRead(&tPos);
 
-        int cx = tPos.px, cy = tPos.py;
-        if (tPos.px >= 65 && tPos.px <= 254 && tPos.py >= 25 && tPos.py <= 214) { // Check cursor in board
-            px = (tPos.px - 65) / 10; // Intersect X
-            py = (tPos.py - 25) / 10; // Intersect Y
-            if (!mode && kDown & KEY_TOUCH) { // Touch down event
-                if (ref.CanPlace(player, px, py)) {
-                    board[px][py].p = player;
-                    int winPos = ref.WinningPosition(px, py);
-                    if (winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
-                        *((int *)dataPtr) = player;
-                        return ST_GAMEOVER;
-                    }
-                    player = !(player - 1) + 1;
+    if (!mode && ((int *)dataPtr)[2] == 1 && player == 2) {
+        t_vec pos;
+        pos = ais[ai]->think(board, 1);
+        if (ref.CanPlace(player, pos.x, pos.y)) {
+            board[pos.x][pos.y].p = player;
+            int winPos = ref.WinningPosition(px, py);
+            if (winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
+                ((int *)dataPtr)[3] = player;
+                return ST_GAMEOVER;
+            }
+            player = !(player - 1) + 1;
+        }
+        return ST_KEEP;
+    }
+
+    int cx = tPos.px, cy = tPos.py;
+    if (tPos.px >= 65 && tPos.px <= 254 && tPos.py >= 25 && tPos.py <= 214) { // Check cursor in board
+        px = (tPos.px - 65) / 10; // Intersect X
+        py = (tPos.py - 25) / 10; // Intersect Y
+        if (!mode && kDown & KEY_TOUCH) { // Touch down event
+            if (ref.CanPlace(player, px, py)) {
+                board[px][py].p = player;
+                int winPos = ref.WinningPosition(px, py);
+                if (winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
+                    ((int *)dataPtr)[3] = player;
+                    return ST_GAMEOVER;
                 }
-            } else if (mode && kHeld & KEY_TOUCH) board[px][py].p = piece;
-        }
-        if (kDown & KEY_TOUCH) {
-            if (BUT_HIT(LEFT_X, MENU_Y, cx, cy)) return ST_MENU;
-            else if (BUT_HIT(LEFT_X, EDIT_Y, cx, cy)) mode = !mode;
-            else if (mode && BUT_HIT(LEFT_X, SWAP_Y, cx, cy)) player = INVP(player);
-            else if (mode && BUT_HIT(RIGHT_X, BLANK_Y, cx, cy)) piece = 0;
-            else if (mode && BUT_HIT(RIGHT_X, BLUE_Y, cx, cy)) piece = 1;
-            else if (mode && BUT_HIT(RIGHT_X, RED_Y, cx, cy)) piece = 2;
-        }
+                player = !(player - 1) + 1;
+            }
+        } else if (mode && kHeld & KEY_TOUCH) board[px][py].p = piece;
+    }
+    if (kDown & KEY_TOUCH) {
+        if (BUT_HIT(LEFT_X, MENU_Y, cx, cy)) return ST_MENU;
+        else if (BUT_HIT(LEFT_X, EDIT_Y, cx, cy)) mode = !mode;
+        else if (mode && BUT_HIT(LEFT_X, SWAP_Y, cx, cy)) player = INVP(player);
+        else if (mode && BUT_HIT(RIGHT_X, BLANK_Y, cx, cy)) piece = 0;
+        else if (mode && BUT_HIT(RIGHT_X, BLUE_Y, cx, cy)) piece = 1;
+        else if (mode && BUT_HIT(RIGHT_X, RED_Y, cx, cy)) piece = 2;
+    }
     return ST_KEEP;
 }
 

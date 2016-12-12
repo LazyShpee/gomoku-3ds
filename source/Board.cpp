@@ -65,6 +65,13 @@ void Board::destroyBoard(Board::t_tile **board, int w, int h) {
     free(board);
 }
 
+void Board::destroyBoard(char **board, int w, int h) {
+    for (int x = 0; x < w; x++) {
+        free(board[x]);
+    }
+    free(board);
+}
+
 void Board::restoreBoard(Board::t_tile **board, char **save, int w, int h) {
     for (int x = 0; x < w; x++) {
         for (int y = 0; y < h; y++) {
@@ -90,4 +97,14 @@ char ** Board::saveBoard(Board::t_tile **board, int w, int h) {
         }
     }
     return save;
+}
+
+Board::t_tile **Board::copyBoard(Board::t_tile **board, int w, int h) {
+    Board::t_tile **newBoard = Board::makeNewBoard(w, h);
+    for (int x = 0; x < w; x++) {
+        for (int y = 0; y < h; y++) {
+            newBoard[x][y].p = board[x][y].p;
+        }
+    }
+    return newBoard;
 }

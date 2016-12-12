@@ -48,7 +48,7 @@ GameState MainMenu::Update(int dtms, void *dataPtr) {
         else if (tPos.px < 10)
             return ST_GAMEOVER;
     }
-    *((int*)dataPtr) = (int)GameMode;
+    ((int*)dataPtr)[2] = (int)GameMode;
     return ST_KEEP;
 }
 
