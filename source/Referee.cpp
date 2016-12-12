@@ -46,15 +46,13 @@ char Referee::vision(char *v, int x, int y, int d, bool lookBack) {
   return pos;
 }
 
-int Referee::WiningPosition(int x, int y) {
+int Referee::WinningPosition(int x, int y) {
   if (!board[x][y].p)
     return 3;
   int ret = 0;
   int p = board[x][y].p;
-  int e = INVP(p);
   for (int d = 0; d < 8; d++) {
     Board::t_tile *tmp = &board[x][y];
-    int dx = directions[d][0], dy = directions[d][1];
     int k = 1;
     while (tmp->sides[(d + 4) % 8] && tmp->sides[(d + 4) % 8]->p == p) tmp = tmp->sides[(d + 4) % 8];
     while (tmp->sides[d] && tmp->sides[d]->p == p) {

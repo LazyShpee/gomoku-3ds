@@ -99,7 +99,7 @@ void Game::Draw(void *dataPtr) {
         BottomScreen.DrawImage(Buttons, RIGHT_X - 20 * (piece == 2), RED_Y, 300, 0, 50, 50);
     }
 
-    int ret = ref.WiningPosition(px, py);
+    int ret = ref.WinningPosition(px, py);
     std::stringstream ret_v;
     ret_v << ret;
     TopScreen.DrawText(FantasqueFont, 1, 60, ret_v.str());
