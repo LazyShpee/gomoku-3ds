@@ -18,9 +18,15 @@
 # include "Goban_bgr.h"
 # define I_GOBAN_W 202
 # define I_GOBAN_H 202
+# include "SailorMarsBig_bgr.h"
+# define I_SAILORMARSBIG_W 276
+# define I_SAILORMARSBIG_H 240
 # include "SailorMars_bgr.h"
 # define I_SAILORMARS_W 138
 # define I_SAILORMARS_H 240
+# include "SailorMercuryBig_bgr.h"
+# define I_SAILORMERCURYBIG_W 276
+# define I_SAILORMERCURYBIG_H 240
 # include "SailorMercury_bgr.h"
 # define I_SAILORMERCURY_W 138
 # define I_SAILORMERCURY_H 240

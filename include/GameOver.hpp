@@ -13,7 +13,12 @@ class GameOver : public IFrame {
 
         Image<I_TOPBG_W, I_TOPBG_H> TopBg;
     	Image<I_BOTTOMBG_W, I_BOTTOMBG_H> BottomBg;
+        Image<I_SAILORMARSBIG_W, I_SAILORMARSBIG_H> SailorMarsBig;
+        Image<I_SAILORMERCURYBIG_W, I_SAILORMERCURYBIG_H> SailorMercuryBig;
 
+        Font<I_FANTASQUEFONT_W, I_FANTASQUEFONT_H> FantasqueFont;
+
+        int textTaint;
     public:
         GameOver();
         virtual ~GameOver();
