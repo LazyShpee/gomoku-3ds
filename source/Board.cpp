@@ -48,6 +48,12 @@ Board::t_tile **Board::makeNewBoard(int w, int h) {
     return board;
 }
 
+Board::t_tile **Board::makeNewBoard(char **board, int w, int h) {
+    t_tile **newBoard = makeNewBoard(w, h);
+    restoreBoard(newBoard, board, w, h);
+    return  newBoard;
+}
+
 void Board::destroyBoard(Board::t_tile **board, int w, int h) {
     for (int x = 0; x < w; x++) {
         for (int y = 0; y < h; y++) {
@@ -57,4 +63,31 @@ void Board::destroyBoard(Board::t_tile **board, int w, int h) {
         free(board[x]);
     }
     free(board);
+}
+
+void Board::restoreBoard(Board::t_tile **board, char **save, int w, int h) {
+    for (int x = 0; x < w; x++) {
+        for (int y = 0; y < h; y++) {
+            board[x][y].p = save[x][y];
+        }
+    }
+}
+
+void Board::saveBoard(Board::t_tile **board, char **save, int w, int h) {
+    for (int x = 0; x < w; x++) {
+        for (int y = 0; y < h; y++) {
+            save[x][y] = board[x][y].p;
+        }
+    }
+}
+
+char ** Board::saveBoard(Board::t_tile **board, int w, int h) {
+    char **save = (char **)malloc(sizeof(char *) * w);
+    for (int x = 0; x < w; x++) {
+        save[x] = (char *)malloc(sizeof(char) * h);
+        for (int y = 0; y < h; y++) {
+            save[x][y] = board[x][y].p;
+        }
+    }
+    return save;
 }
