@@ -10,6 +10,7 @@ protected:
   Referee ref;
   int maxValue(int *result, int lvl);
   t_vec MiniMax(Board::t_tile **board, int *score, int player, int depth, int lvl);
+  bool somethingAround(Board::t_tile **board, int x, int y);
 public:
   int EvalPos(Board::t_tile **board, int x, int y, int *score);
   AIMiniMax();
