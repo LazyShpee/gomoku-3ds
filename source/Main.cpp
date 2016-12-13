@@ -7,6 +7,7 @@
 #include "../include/Game.hpp"
 #include "../include/GameOver.hpp"
 #include "../include/MainMenu.hpp"
+
 int main(int ac, char **av, char **env)
 {
 	GameState retState;
@@ -24,7 +25,6 @@ int main(int ac, char **av, char **env)
 	MainMenu * menu = new MainMenu;
 	IFrame * currentFrame = menu;
 	int dataPtr[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-
 	while (aptMainLoop())
 	{
 		gspWaitForVBlank(); // Wait for next frame
