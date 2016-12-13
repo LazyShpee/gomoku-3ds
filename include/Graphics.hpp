@@ -10,6 +10,8 @@
 
 # include "../include/Images.hpp"
 
+# define DECAL_RIGHT -5
+
 # define TOP_HEIGHT         240 // Top screen height
 # define TOP_WIDTH          400 // Top screen width
 # define TOP_SIZE           (TOP_HEIGHT * TOP_WIDTH)

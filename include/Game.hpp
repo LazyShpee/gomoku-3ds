@@ -27,6 +27,7 @@ class Game : public IFrame {
 
         /* Screens */
         Screen<TOP_WIDTH, TOP_HEIGHT, GFX_TOP, GFX_LEFT> TopScreen;
+        Screen<TOP_WIDTH, TOP_HEIGHT, GFX_TOP, GFX_RIGHT> TopScreen2;
         Screen<BOTTOM_WIDTH, BOTTOM_HEIGHT, GFX_BOTTOM, GFX_LEFT> BottomScreen;
 
         /* Images */

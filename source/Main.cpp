@@ -17,7 +17,7 @@ int main(int ac, char **av, char **env)
 
 	srand(time(NULL));
 	gfxInitDefault();
-	//gfxSet3D(true); // uncomment if using stereoscopic 3D
+	gfxSet3D(true); // uncomment if using stereoscopic 3D
 
 	GameOver * gameover = new GameOver;
 	Game * game = new Game;
@@ -29,6 +29,7 @@ int main(int ac, char **av, char **env)
 	{
 		gspWaitForVBlank(); // Wait for next frame
 		hidScanInput(); // Read inputs
+
 
 		timeThen = timeNow.tv_sec * 1000000 + timeNow.tv_usec;
 		gettimeofday(&timeNow, NULL);

@@ -20,11 +20,19 @@ GameState GameOver::Update(int dtms, void *dataPtr) {
 
 void GameOver::Draw(void *dataPtr) {
     TopScreen.GetFrameBuffer();
+    TopScreen2.GetFrameBuffer();
     BottomScreen.GetFrameBuffer();
 
+
     TopScreen.DrawImage(TopBg, 0, 0);
+    TopScreen2.DrawImage(TopBg, 0, 0);
     BottomScreen.DrawImage(BottomBg, 0, 0);
-    if (((int *)dataPtr)[3] == 1) TopScreen.DrawImage(SailorMercuryBig, 60, 0);
-    else TopScreen.DrawImage(SailorMarsBig, 60, 0);
+    if (((int *)dataPtr)[3] == 1) {
+        TopScreen.DrawImage(SailorMercuryBig, 60, 0);
+        TopScreen2.DrawImage(SailorMercuryBig, 55, 0);
+    } else {
+        TopScreen.DrawImage(SailorMarsBig, 60, 0);
+        TopScreen2.DrawImage(SailorMarsBig, 55, 0);
+    }
     BottomScreen.DrawText(FantasqueFont, 30, 105, "Touch to go back to main menu", textTaint);
 }

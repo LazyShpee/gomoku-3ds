@@ -95,24 +95,31 @@ GameState Game::Update(int dtms, void *dataPtr) {
 
 void Game::Draw(void *dataPtr) {
     TopScreen.GetFrameBuffer();
+    TopScreen2.GetFrameBuffer();
     BottomScreen.GetFrameBuffer();
 
     TopScreen.DrawImage(TopBg, 0, 0);
-    BottomScreen.DrawImage(BottomBg, 0, 0);
+    TopScreen2.DrawImage(TopBg, 0, 0);
 
     TopScreen.DrawImage(SailorMars, 0, 0, 0, 0, 0, 0, player == 2 ? -1 : 0);
+    TopScreen2.DrawImage(SailorMars, DECAL_RIGHT, 0, 0, 0, 0, 0, player == 2 ? -1 : 0);
     TopScreen.DrawImage(SailorMercury, TOP_WIDTH - I_SAILORMERCURY_W, 0, 0, 0, 0, 0, player == 1 ? -1 : 0);
+    TopScreen2.DrawImage(SailorMercury, TOP_WIDTH - I_SAILORMERCURY_W + DECAL_RIGHT, 0, 0, 0, 0, 0, player == 1 ? -1 : 0);
 
     TopScreen.DrawImage(ScoreBoard, 135, 92);
+    TopScreen2.DrawImage(ScoreBoard, 135 + DECAL_RIGHT * 2, 92);
     std::stringstream score;
     score << (scores[0] < 10 ? "0" : "")  << scores[0];
     TopScreen.DrawText(ScoreFont, 217, 100, score.str());
+    TopScreen2.DrawText(ScoreFont, 217 + DECAL_RIGHT * 2, 100, score.str());
     score.str( std::string() );
     score << (scores[1] < 10 ? "0" : "") << scores[1];
     TopScreen.DrawText(ScoreFont, 147, 100, score.str());
+    TopScreen2.DrawText(ScoreFont, 147 + DECAL_RIGHT * 2, 100, score.str());
 
 
 
+    BottomScreen.DrawImage(BottomBg, 0, 0);
     BottomScreen.DrawImage(Goban, 59, 19);
     BottomScreen.DrawImage(Buttons, LEFT_X, MENU_Y, 0, 0, 50, 50);
     BottomScreen.DrawImage(Buttons, LEFT_X, MENU_Y, 100, 0, 50, 50);

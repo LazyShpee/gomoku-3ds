@@ -54,12 +54,17 @@ GameState MainMenu::Update(int dtms, void *dataPtr) {
 
 void MainMenu::Draw(void *dataPtr) {
     TopScreen.GetFrameBuffer();
+    TopScreen2.GetFrameBuffer();
     BottomScreen.GetFrameBuffer();
 
     TopScreen.DrawImage(TopBg, 0, 0);
+    TopScreen2.DrawImage(TopBg, 0, 0);
     TopScreen.DrawImage(SailorMercury, Me_x, 0);
+    TopScreen2.DrawImage(SailorMercury, Me_x + DECAL_RIGHT, 0);
     TopScreen.DrawImage(SailorMars, Ma_x, 0);
+    TopScreen2.DrawImage(SailorMars, Ma_x + DECAL_RIGHT, 0);
     TopScreen.DrawImage(Title, 25, Title_y, 0, 0, 0, 0, 0x23AF34);
+    TopScreen2.DrawImage(Title, 25  + DECAL_RIGHT * 2, Title_y, 0, 0, 0, 0, 0x23AF34);
 
     BottomScreen.DrawImage(BottomBg, 0, 0);
 
