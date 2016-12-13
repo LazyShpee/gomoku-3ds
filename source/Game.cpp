@@ -1,4 +1,5 @@
 #include <sstream>
+#include <assert.h>
 #include "../include/Game.hpp"
 
 #define LEFT_X 5
@@ -47,6 +48,7 @@ GameState Game::Update(int dtms, void *dataPtr) {
     if (!mode && ((int *)dataPtr)[2] == 1 && player == 2) {
         t_vec pos;
         pos = ais[ai]->think(board, scores, player, 1);
+        assert(pos.x < 19 && pos.y < 19 && pos.x >=0 && pos.y >= 0);
         if (ref.CanPlace(player, pos.x, pos.y)) {
             board[pos.x][pos.y].p = player;
             int winPos = ref.WinningPosition(px, py);
@@ -117,7 +119,9 @@ void Game::Draw(void *dataPtr) {
     TopScreen.DrawText(ScoreFont, 147, 100, score.str());
     TopScreen2.DrawText(ScoreFont, 147 + DECAL_RIGHT * 2, 100, score.str());
 
-
+    score.str(std::string());
+    score << ais[0]->EvalPos(board, px, py, scores);
+    TopScreen.DrawText(FantasqueFont, 0, 0, score.str());
 
     BottomScreen.DrawImage(BottomBg, 0, 0);
     BottomScreen.DrawImage(Goban, 59, 19);

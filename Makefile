@@ -38,7 +38,7 @@ GRAPHICS	:=	gfx
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
-CFLAGS	:=	-g -Wall -Ofast -mword-relocations \
+CFLAGS	:=	-g3 -Wall -Ofast -mword-relocations \
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 

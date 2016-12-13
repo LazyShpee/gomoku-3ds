@@ -1,7 +1,7 @@
 #include "../include/AIMiniMax.hpp"
 
 AIMiniMax::AIMiniMax() : ref(NULL) {
-  
+
 }
 AIMiniMax::~AIMiniMax() {}
 
@@ -14,45 +14,42 @@ t_vec AIMiniMax::maxValue(int *result, int lvl) {
       pos = i;
     }
   }
-  return (t_vec){pos % 19, pos / 19};
+  return (t_vec){pos % 19, (pos / 19) % 19};
 }
 
 t_vec AIMiniMax::MiniMax(Board::t_tile **board, int *score, int player, int depth, int lvl)
 {
   int result[19 * 19];
+  Board::t_tile **new_board = Board::makeNewBoard(19, 19);
+  ref.setBoard(new_board);
   if (player == 2) { // max
     for (int x = 0; x < 19; x++)
       for (int y = 0; y < 19; y++) {
-	Board::t_tile **new_board = Board::makeNewBoard(board, 19, 19);
-	new_board[x][y].p = player;
-	ref.setBoard(new_board);
-	if (ref.CanPlace(player, x, y)) {
-	  t_vec tmp;
-	  tmp = MiniMax(new_board, score, INVP(player), depth, lvl);
-	  new_board[tmp.x][tmp.y].p = INVP(player);
-	  ref.setBoard(new_board);
-	  result[y * 19 + x] = EvalPos(new_board, tmp.x, tmp.y, score);
-	} else result[y * 19 + x] = -1;
-	Board::destroyBoard(new_board, 19, 19);
+        Board::restoreBoard(new_board, board, 19, 19);
+        if (ref.CanPlace(player, x, y)) {
+          new_board[x][y].p = player;
+          t_vec tmp;
+          tmp = MiniMax(new_board, score, INVP(player), depth - 1, lvl);
+          new_board[tmp.x][tmp.y].p = INVP(player);
+          result[y * 19 + x] = EvalPos(new_board, tmp.x, tmp.y, score);
+        } else result[y * 19 + x] = -1;
       }
   } else { // min
     for (int x = 0; x < 19; x++)
       for (int y = 0; y < 19; y++) {
-	Board::t_tile **new_board = Board::makeNewBoard(board, 19, 19);
-	new_board[x][y].p = player;
-	ref.setBoard(new_board);
-	if (ref.CanPlace(player, x, y)) {
-	  if (depth) {
-	    t_vec tmp;
-	    tmp = MiniMax(new_board, score, INVP(player), depth - 1, lvl);
-	    new_board[tmp.x][tmp.y].p = INVP(player);
-	    ref.setBoard(new_board);
-	    result[y * 19 + x] = EvalPos(new_board, tmp.x, tmp.y, score);
-	  } else result[y * 19 + x] = EvalPos(new_board, x, y, score);
-	} else result[y * 19 + x] = -1;
-	Board::destroyBoard(new_board, 19, 19);
+        Board::restoreBoard(new_board, board, 19, 19);
+        if (ref.CanPlace(player, x, y)) {
+          new_board[x][y].p = player;
+          if (depth > 0) {
+            t_vec tmp;
+            tmp = MiniMax(new_board, score, INVP(player), depth, lvl);
+            new_board[tmp.x][tmp.y].p = INVP(player);
+            result[y * 19 + x] = EvalPos(new_board, tmp.x, tmp.y, score);
+          } else result[y * 19 + x] = EvalPos(new_board, x, y, score);
+        } else result[y * 19 + x] = -1;
       }
   }
+  Board::destroyBoard(new_board, 19, 19);
   return maxValue(result, lvl);
 }
 
@@ -73,8 +70,8 @@ int AIMiniMax::EvalPos(Board::t_tile **board, int x, int y, int *score) {
     if ((extrem || size == 5) && (ret < size * 10 + extrem))
       ret = size * 10 + extrem;
     if (tmp->sides[d] && tmp->sides[d]->p == e &&
-	tmp->sides[d]->sides[d] && tmp->sides[d]->sides[d]->p == e &&
-	tmp->sides[d]->sides[d]->sides[d] && tmp->sides[d]->sides[d]->sides[d]->p == p) {
+      tmp->sides[d]->sides[d] && tmp->sides[d]->sides[d]->p == e &&
+      tmp->sides[d]->sides[d]->sides[d] && tmp->sides[d]->sides[d]->sides[d]->p == p) {
       int new_ret = (score[(p == 1)] >= 8) ? 60 : 35;
       if (new_ret > ret) ret = new_ret;
     }
