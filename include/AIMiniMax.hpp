@@ -8,7 +8,7 @@
 class AIMiniMax : public IAI {
 protected:
   Referee ref;
-  t_vec maxValue(int *result, int lvl);
+  int maxValue(int *result, int lvl);
   t_vec MiniMax(Board::t_tile **board, int *score, int player, int depth, int lvl);
 public:
   int EvalPos(Board::t_tile **board, int x, int y, int *score);
