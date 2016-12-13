@@ -50,11 +50,11 @@ GameState Game::Update(int dtms, void *dataPtr) {
         if (ref.CanPlace(player, pos.x, pos.y)) {
             board[pos.x][pos.y].p = player;
             int winPos = ref.WinningPosition(px, py);
-            if (winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
-                ((int *)dataPtr)[3] = player;
+            int winCheck = ref.UpdateBoard(px, py, scores);
+            if (winCheck || winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
+                ((int *)dataPtr)[3] = winCheck ? winCheck : player;
                 return ST_GAMEOVER;
             }
-            ref.UpdateBoard(pos.x, pos.y, scores);
             player = !(player - 1) + 1;
         }
         return ST_KEEP;
@@ -68,11 +68,11 @@ GameState Game::Update(int dtms, void *dataPtr) {
             if (ref.CanPlace(player, px, py)) {
                 board[px][py].p = player;
                 int winPos = ref.WinningPosition(px, py);
-                if (winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
-                    ((int *)dataPtr)[3] = player;
+                int winCheck = ref.UpdateBoard(px, py, scores);
+                if (winCheck || winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
+                    ((int *)dataPtr)[3] = winCheck ? winCheck : player;
                     return ST_GAMEOVER;
                 }
-                ref.UpdateBoard(px, py, scores);
                 player = !(player - 1) + 1;
             }
         } else if (mode && kHeld & KEY_TOUCH) board[px][py].p = piece;

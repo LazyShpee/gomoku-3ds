@@ -47,6 +47,14 @@ char Referee::vision(char *v, int x, int y, int d, bool lookBack) {
 }
 
 int Referee::WinningPosition(int x, int y) {
+  int ret = _WinningPosition(x, y);
+  if (ret == 1) {
+    winningPos.push_back(&board[x][y]);
+  }
+  return ret;
+}
+
+int Referee::_WinningPosition(int x, int y) {
   if (!board[x][y].p)
     return 3;
   int ret = 0;
@@ -144,7 +152,7 @@ bool Referee::CanPlace(char player, int x, int y) {
   return true;
 }
 
-bool Referee::UpdateBoard(int x, int y, int *scores) {
+int Referee::UpdateBoard(int x, int y, int *scores) {
   for (int d = 0; d < 8; d++) {
     int dx = directions[d][0], dy = directions[d][1];
     int p = board[x][y].p;
@@ -158,5 +166,13 @@ bool Referee::UpdateBoard(int x, int y, int *scores) {
       }
     }
   }
-  return false;
+  std::vector<Board::t_tile *>::iterator tests = winningPos.begin();
+  while (tests != winningPos.end()) {
+    int ret = _WinningPosition((*tests)->x, (*tests)->y);
+    if (ret == 2)
+      return (*tests)->p;
+    else
+      tests++;
+  }
+  return 0;
 }
