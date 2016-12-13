@@ -27,7 +27,7 @@ Game::Game() :
     scores[0] = scores[1] = 0;
 
     ais = (IAI **)malloc(sizeof(IAI *) * nai);
-    ais[0] = new AIMiniMax;
+    ais[0] = new AISociable;
     nai = 1;
 }
 
@@ -51,8 +51,8 @@ GameState Game::Update(int dtms, void *dataPtr) {
         assert(pos.x < 19 && pos.y < 19 && pos.x >=0 && pos.y >= 0);
         if (ref.CanPlace(player, pos.x, pos.y)) {
             board[pos.x][pos.y].p = player;
-            int winPos = ref.WinningPosition(px, py);
-            int winCheck = ref.UpdateBoard(px, py, scores);
+            int winPos = ref.WinningPosition(pos.x, pos.y);
+            int winCheck = ref.UpdateBoard(pos.x, pos.y, scores);
             if (winCheck || winPos == 2 || scores[1] >= 10 || scores[0] >= 10) {
                 ((int *)dataPtr)[3] = winCheck ? winCheck : player;
                 return ST_GAMEOVER;

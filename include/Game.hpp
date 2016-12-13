@@ -11,6 +11,7 @@
 # include "../include/Board.hpp"
 # include "../include/AIRandom.hpp"
 # include "../include/AIMiniMax.hpp"
+# include "../include/AISociable.hpp"
 
 # define BX 65 // Board Start X position
 # define BY 25 // Board Start Y position
