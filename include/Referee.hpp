@@ -15,6 +15,7 @@ protected:
 	bool Three(char player, int x, int y, int dir);
 	int _WinningPosition(int x, int y);
 public:
+	void setBoard(Board::t_tile **board);
 	int WinningPosition(int x, int y);
         char vision(char *v, int x, int y, int direction, bool lookBack = false);
 	Referee(Board::t_tile **board);

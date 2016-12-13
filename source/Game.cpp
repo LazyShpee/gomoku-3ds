@@ -26,7 +26,7 @@ Game::Game() :
     scores[0] = scores[1] = 0;
 
     ais = (IAI **)malloc(sizeof(IAI *) * nai);
-    ais[0] = new AIRandom;
+    ais[0] = new AIMiniMax;
     nai = 1;
 }
 

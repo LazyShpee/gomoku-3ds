@@ -19,6 +19,10 @@ Referee::~Referee() {
 
 }
 
+void Referee::setBoard(Board::t_tile **board) {
+  this->board = board;
+}
+
 char Referee::vision(char *v, int x, int y, int d, bool lookBack) {
   int dir[2] = {directions[d][0], directions[d][1]};
   int pos = 0;
