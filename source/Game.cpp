@@ -119,10 +119,6 @@ void Game::Draw(void *dataPtr) {
     TopScreen.DrawText(ScoreFont, 147, 100, score.str());
     TopScreen2.DrawText(ScoreFont, 147 + DECAL_RIGHT * 2, 100, score.str());
 
-    score.str(std::string());
-    score << ais[0]->EvalPos(board, px, py, scores);
-    TopScreen.DrawText(FantasqueFont, 0, 0, score.str());
-
     BottomScreen.DrawImage(BottomBg, 0, 0);
     BottomScreen.DrawImage(Goban, 59, 19);
     BottomScreen.DrawImage(Buttons, LEFT_X, MENU_Y, 0, 0, 50, 50);

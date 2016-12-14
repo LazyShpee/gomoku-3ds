@@ -11,6 +11,7 @@
 #define S_FUTURE_PROTECT 0
 #define S_PROTECT_WIN 60
 
+#define S_BLOCK_2 20
 #define S_BLOCK_BLANK_3 50
 #define S_BLOCK_FULL_3 (S_BLOCK_BLANK_3 + 1)
 
@@ -45,12 +46,14 @@ int AISociable::EvalPos(Board::t_tile **board, int x, int y, int *score) {
             if (dd >= 1 && da >= 2  && v[dd + 1] == e && v[dd + 2] == e && v[dd - 1] == e) MAX(value, S_BLOCK_BLANK_3);
             if (da >= 4 && v[dd + 1] == e && v[dd + 2] == e && v[dd + 3] == e && v[dd + 4] != p) MAX(value, S_BLOCK_FULL_3);
 
+            if (da >= 2 && v[dd + 1] == e && v[dd + 2] == e) MAX(value, S_BLOCK_2);
+
             if (da >= 2 && v[dd + 1] == p && v[dd + 2] == p) MAX(value, S_SELFCHAIN_BONUS * 1);
             if (da >= 3 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == p) MAX(value, S_SELFCHAIN_BONUS * 2);
             if (da >= 4 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == p && v[dd + 4] == p) MAX(value, ref._WinningPosition(x, y) == 2 ? S_WIN : S_CAN_WIN);
             if (dd >= 1 && da >= 2  && v[dd + 1] == p && v[dd + 2] == p && v[dd - 1] == p) MAX(value, ref._WinningPosition(x, y) == 2 ? S_WIN : S_CAN_WIN);
 
-            if (dd >= 1 && !v[dd - 1] && da >= 2 && v[dd + 1] == p && v[dd + 2] == e) ABORT = true;
+            if (value < 100 && dd >= 1 && !v[dd - 1] && da >= 2 && v[dd + 1] == p && v[dd + 2] == e) ABORT = true;
         }
         if (value > ret) ret = value;
     }
@@ -58,6 +61,7 @@ int AISociable::EvalPos(Board::t_tile **board, int x, int y, int *score) {
 }
 
 t_vec AISociable::think(Board::t_tile **board, int *score, int player, int lvl) {
+    std::vector<t_vec> poses;
     t_vec pos = {rand() % 19, rand() % 19};
     int value = -1;
     Board::t_tile **new_board = Board::makeNewBoard(19, 19);
@@ -71,11 +75,16 @@ t_vec AISociable::think(Board::t_tile **board, int *score, int player, int lvl) 
                     if (nvalue > value) {
                         pos = (t_vec){x, y};
                         value = nvalue;
+                        poses.clear();
+                        poses.push_back(pos);
+                    } else if (nvalue == value) {
+                        pos = (t_vec){x, y};
+                        poses.push_back(pos);
                     }
                 }
             }
         }
-    return pos;
+    return poses[rand() % poses.size()];
 }
 
 AISociable::AISociable() : ref(NULL) {
