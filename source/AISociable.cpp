@@ -2,10 +2,13 @@
 
 #define INV(d) ((d + 4) % 8)
 
+#define MAX(a, b) a = ((a) > (b) ? (a) : (b))
+
 #define S_CAPTURE 30
 #define S_CAPTURE_WIN 100
 
 #define S_PROTECT 20
+#define S_FUTURE_PROTECT 0
 #define S_PROTECT_WIN 60
 
 #define S_BLOCK_BLANK_3 50
@@ -20,6 +23,7 @@ int AISociable::EvalPos(Board::t_tile **board, int x, int y, int *score) {
     int ret = 0, value = 0;
     int p = board[x][y].p;
     int e = INVP(p);
+    bool ABORT = false;
 
     for (int d = 0; d < 8; d++) {
         value = 0;
@@ -36,19 +40,21 @@ int AISociable::EvalPos(Board::t_tile **board, int x, int y, int *score) {
                 v[c++] = tmp->p;
                 tmp = tmp->sides[d];
             }
-            if (da >= 4 && v[dd + 1] == e && v[dd + 2] == e && v[dd + 3] == p) value = score[p - 1] >= 6 ? S_CAPTURE_WIN : S_CAPTURE;
-            if (da >= 4 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == e) value = score[e - 1] >= 6 ? S_PROTECT_WIN : S_PROTECT;
-            if (dd >= 1 && da >= 2  && v[dd + 1] == e && v[dd + 2] == e && v[dd - 1] == e) value = S_BLOCK_BLANK_3;
-            if (da >= 4 && v[dd + 1] == e && v[dd + 2] == e && v[dd + 3] == e && v[dd + 4] != p) value = S_BLOCK_FULL_3;
+            if (da >= 4 && v[dd + 1] == e && v[dd + 2] == e && v[dd + 3] == p) MAX(value, (score[p - 1] >= 6 ? S_CAPTURE_WIN : S_CAPTURE));
+            if (da >= 3 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == e) MAX(value, (score[e - 1] >= 6 ? S_PROTECT_WIN : S_PROTECT));
+            if (dd >= 1 && da >= 2  && v[dd + 1] == e && v[dd + 2] == e && v[dd - 1] == e) MAX(value, S_BLOCK_BLANK_3);
+            if (da >= 4 && v[dd + 1] == e && v[dd + 2] == e && v[dd + 3] == e && v[dd + 4] != p) MAX(value, S_BLOCK_FULL_3);
 
-            if (da >= 2 && v[dd + 1] == p && v[dd + 2] == p) value = S_SELFCHAIN_BONUS * 1;
-            if (da >= 3 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == p) value = S_SELFCHAIN_BONUS * 2;
-            if (da >= 4 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == p && v[dd + 4] == p) value = ref._WinningPosition(x, y) == 2 ? S_WIN : S_CAN_WIN;
-            if (dd >= 1 && da >= 2  && v[dd + 1] == p && v[dd + 2] == p && v[dd - 1] == p) value = ref._WinningPosition(x, y) == 2 ? S_WIN : S_CAN_WIN;
+            if (da >= 2 && v[dd + 1] == p && v[dd + 2] == p) MAX(value, S_SELFCHAIN_BONUS * 1);
+            if (da >= 3 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == p) MAX(value, S_SELFCHAIN_BONUS * 2);
+            if (da >= 4 && v[dd + 1] == p && v[dd + 2] == p && v[dd + 3] == p && v[dd + 4] == p) MAX(value, ref._WinningPosition(x, y) == 2 ? S_WIN : S_CAN_WIN);
+            if (dd >= 1 && da >= 2  && v[dd + 1] == p && v[dd + 2] == p && v[dd - 1] == p) MAX(value, ref._WinningPosition(x, y) == 2 ? S_WIN : S_CAN_WIN);
+
+            if (dd >= 1 && !v[dd - 1] && da >= 2 && v[dd + 1] == p && v[dd + 2] == e) ABORT = true;
         }
         if (value > ret) ret = value;
     }
-    return ret;
+    return ABORT ? -1000 : ret;
 }
 
 t_vec AISociable::think(Board::t_tile **board, int *score, int player, int lvl) {
