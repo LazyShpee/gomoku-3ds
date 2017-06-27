@@ -67,12 +67,12 @@ typedef struct {
 template<size_t WIDTH, size_t HEIGHT>
 class Font : public Image<WIDTH, HEIGHT> {
     protected:
-        char *charset;
+        const char *charset;
         size_t lencharset;
         int sep;
         std::vector<Letter> letters;
     public:
-        Font(const u8 *newfb, std::string const & _charset, int alpha = -1) : Image<WIDTH, HEIGHT>(newfb, alpha), charset(strdup(_charset.c_str())), lencharset(strlen(charset)) {
+        Font(const u8 *newfb, std::string const & _charset, int alpha = -1) : Image<WIDTH, HEIGHT>(newfb, alpha), charset(_charset.c_str()), lencharset(strlen(charset)) {
             sep =   this->fb[0] << 0 |
                     this->fb[1] << 8 |
                     this->fb[2] << 16;
