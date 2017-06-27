@@ -17,6 +17,7 @@ class MainMenu : public IFrame {
         touchPosition tPos;
 
         Screen<TOP_WIDTH, TOP_HEIGHT, GFX_TOP, GFX_LEFT> TopScreen;
+        Screen<TOP_WIDTH, TOP_HEIGHT, GFX_TOP, GFX_RIGHT> TopScreen2;
         Screen<BOTTOM_WIDTH, BOTTOM_HEIGHT, GFX_BOTTOM, GFX_LEFT> BottomScreen;
 
         Image<I_TOPBG_W, I_TOPBG_H> TopBg;
@@ -31,6 +32,7 @@ class MainMenu : public IFrame {
         Font<I_FANTASQUEFONT_W, I_FANTASQUEFONT_H> FantasqueFont;
 
         int Ma_x, Me_x, Title_y;
+        int timer;
 
         enum GameModes {
             PVP = 0,
